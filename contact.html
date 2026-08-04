@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اتصل بنا - SaaSAutomate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { font-family: 'Cairo', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100">
+    <nav class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 h-20 flex items-center justify-between px-4">
+        <a href="index.html" class="text-xl font-bold">SaaSAutomate</a>
+    </nav>
+
+    <div class="max-w-4xl mx-auto px-4 py-16">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl font-bold mb-4 text-blue-400">اتصل بنا</h1>
+            <p class="text-slate-400">لديك أسئلة أو اقتراحات؟ نحن هنا للمساعدة</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-12 mb-12">
+            <!-- Contact Form -->
+            <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl">
+                <h2 class="text-2xl font-bold mb-6">أرسل لنا رسالة</h2>
+                <form onsubmit="handleContactForm(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">الاسم</label>
+                        <input type="text" name="name" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="اسمك الكامل">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">البريد الإلكتروني</label>
+                        <input type="email" name="email" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="بريدك@example.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">الموضوع</label>
+                        <input type="text" name="subject" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="موضوع الرسالة">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-semibold mb-2">الرسالة</label>
+                        <textarea name="message" required rows="5" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="اكتب رسالتك هنا..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                        إرسال الرسالة
+                    </button>
+                </form>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="space-y-8">
+                <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl">
+                    <h2 class="text-2xl font-bold mb-6">معلومات التواصل</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <h3 class="font-semibold text-blue-400 mb-2">البريد الإلكتروني</h3>
+                            <a href="mailto:info@saasautomate.com" class="text-slate-400 hover:text-blue-400 transition-colors">
+                                info@saasautomate.com
+                            </a>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-blue-400 mb-2">وسائل التواصل الاجتماعي</h3>
+                            <div class="space-y-2">
+                                <a href="https://twitter.com" target="_blank" class="block text-slate-400 hover:text-blue-400 transition-colors">
+                                    Twitter: @SaaSAutomate
+                                </a>
+                                <a href="https://linkedin.com" target="_blank" class="block text-slate-400 hover:text-blue-400 transition-colors">
+                                    LinkedIn: SaaSAutomate
+                                </a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold text-blue-400 mb-2">أوقات الرد</h3>
+                            <p class="text-slate-400">
+                                نرد على جميع الرسائل خلال 24 ساعة<br>
+                                (من الاثنين إلى الجمعة)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-blue-600/10 border border-blue-500/30 p-8 rounded-2xl">
+                    <h3 class="text-lg font-bold text-blue-400 mb-4">هل تريد الشراكة معنا؟</h3>
+                    <p class="text-slate-300 mb-4">
+                        نتطلع للتعاون مع الشركات والمسوقين. اتصل بنا لنناقش الفرص المتاحة.
+                    </p>
+                    <a href="mailto:partnerships@saasautomate.com" class="text-blue-400 hover:text-blue-300 transition-colors font-semibold">
+                        اطلب شراكة
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
