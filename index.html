@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" id="html-root">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="منصة مقارنة شاملة لأفضل أدوات أتمتة الأعمال - Make، Zapier، و n8n. اختر الأفضل لعملك وحقق توفيرات حقيقية.">
+    <meta name="keywords" content="أتمتة الأعمال، Make، Zapier، n8n، حاسبة ROI، مقارنة منصات">
+    <meta name="author" content="SaaSAutomate">
+    <title data-i18n="title">SaaSAutomate - أفضل أدوات أتمتة الأعمال</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root { font-family: 'Cairo', sans-serif; }
+        html[dir="ltr"] { font-family: 'Inter', sans-serif; }
+        
+        /* Smooth transitions */
+        * {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        
+        /* Dark mode default */
+        body {
+            background-color: #0f172a;
+            color: #e2e8f0;
+        }
+        
+        /* Light mode */
+        body.light-mode {
+            background-color: #f1f5f9;
+            color: #1e293b;
+        }
+        
+        body.light-mode .bg-slate-900 {
+            background-color: #f8fafc;
+        }
+        
+        body.light-mode .bg-slate-800 {
+            background-color: #e2e8f0;
+        }
+        
+        body.light-mode .text-slate-100 {
+            color: #1e293b;
+        }
+        
+        body.light-mode .text-slate-400 {
+            color: #64748b;
+        }
+        
+        body.light-mode .border-slate-800 {
+            border-color: #cbd5e1;
+        }
+        
+        body.light-mode .border-slate-700 {
+            border-color: #cbd5e1;
+        }
+        
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 antialiased transition-colors duration-300" id="body-root">
+
+    <!-- Navbar -->
+    <nav class="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-md border-b border-slate-800 transition-colors duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-xl font-bold tracking-wider">SaaSAutomate</span>
+                <span class="bg-blue-500 text-white rounded px-2 py-0.5 text-xs font-semibold">S</span>
+            </div>
+            
+            <div class="hidden md:flex items-center space-x-8 space-x-reverse text-sm font-medium" id="nav-links">
+                <a href="#features" class="hover:text-blue-400 transition-colors" data-i18n="nav_features">المميزات</a>
+                <a href="#roi" class="hover:text-blue-400 transition-colors" data-i18n="nav_roi">حاسبة ROI</a>
+                <a href="#comparison" class="hover:text-blue-400 transition-colors" data-i18n="nav_comparison">المقارنة</a>
+                <a href="#pricing" class="hover:text-blue-400 transition-colors" data-i18n="nav_pricing">المنصات والأسعار</a>
+                <a href="#faq" class="hover:text-blue-400 transition-colors" data-i18n="nav_faq">الأسئلة الشائعة</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <button onclick="toggleLanguage()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg text-xs font-bold border border-slate-700 transition-colors" id="lang-btn">
+                    EN
+                </button>
+                <button onclick="toggleTheme()" class="bg-slate-800 hover:bg-slate-700 text-slate-200 p-2 rounded-lg text-xs border border-slate-700 transition-colors" id="theme-btn">
+                    ☀️
+                </button>
+                <a href="#pricing" class="hidden sm:inline-block bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-xl text-sm font-semibold transition-colors shadow-lg shadow-blue-600/20" data-i18n="nav_cta">
+                    اختر منصتك
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="py-24 text-center relative overflow-hidden">
+        <div class="max-w-4xl mx-auto px-4">
+            <span class="inline-block bg-slate-800/80 border border-slate-700 text-blue-400 px-4 py-1.5 rounded-full text-xs font-semibold mb-6 fade-in-up" data-i18n="hero_badge">
+                الدليل الشامل لأفضل أدوات الأتمتة
+            </span>
+            <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight fade-in-up" data-i18n="hero_title">
+                قارن واختر أفضل منصة لأتمتة أعمالك وتوفير مئات الساعات
+            </h1>
+            <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed fade-in-up" data-i18n="hero_desc">
+                تحليل محايد ودقيق لأبرز منصات الأتمتة العالمية لمساعدتك في اتخاذ القرار الصحيح وتطوير عملك.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in-up">
+                <a href="#comparison" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-xl shadow-blue-500/20" data-i18n="hero_btn1">
+                    مقارنة المنصات
+                </a>
+                <a href="#roi" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold px-8 py-3.5 rounded-xl transition-all" data-i18n="hero_btn2">
+                    حاسبة التوفير
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Section -->
+    <section id="features" class="py-20 border-t border-slate-800/60">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4" data-i18n="feat_main_title">لماذا تحتاج إلى أتمتة أعمالك؟</h2>
+                <p class="text-slate-400" data-i18n="feat_main_desc">رفع كفاءة العمل وتقليل الأخطاء البشرية عبر الربط الذكي.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10">
+                    <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 mb-6 font-bold text-xl">🤖</div>
+                    <h3 class="text-xl font-bold mb-3" data-i18n="feat_1_title">خدمة عملاء 24/7</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_1_desc">الرد الفوري على استفسارات العملاء وربط منصات الدعم الفني تلقائياً.</p>
+                </div>
+                <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10">
+                    <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 mb-6 font-bold text-xl">📊</div>
+                    <h3 class="text-xl font-bold mb-3" data-i18n="feat_2_title">إدارة البيانات</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_2_desc">نقل وتنسيق البيانات بين قواعد البيانات وجداول السبريد شيت دون تدخل يدوي.</p>
+                </div>
+                <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10">
+                    <div class="w-12 h-12 bg-blue-500/10 border border-blue-500/20 rounded-xl flex items-center justify-center text-blue-400 mb-6 font-bold text-xl">⚡</div>
+                    <h3 class="text-xl font-bold mb-3" data-i18n="feat_3_title">ربط التطبيقات</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_3_desc">ربط أكثر من 5000+ تطبيق ونظام سحابي مع بعضها البعض في ثوانٍ معدودة.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ROI Calculator Section -->
+    <section id="roi" class="py-20 border-t border-slate-800/60 bg-slate-900/50">
+        <div class="max-w-5xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4" data-i18n="roi_title">حاسبة العائد على الاستثمار (ROI)</h2>
+                <p class="text-slate-400" data-i18n="roi_desc">حدد حجم العمل اليدوي لاكتشاف حجم التوفير المالي عند استخدام أدوات الأتمتة.</p>
+            </div>
+            
+            <div class="bg-slate-800/40 border border-slate-700/60 p-8 md:p-12 rounded-3xl grid md:grid-cols-2 gap-12 items-center">
+                <div class="bg-slate-900/80 border border-slate-700/80 p-8 rounded-2xl text-center md:text-start">
+                    <p class="text-xs uppercase tracking-wider text-slate-400 mb-2" data-i18n="roi_res_title">التوفير الشهري المتوقع</p>
+                    <div class="text-4xl md:text-5xl font-extrabold text-blue-400 mb-4" id="monthly-saving">$5,600</div>
+                    <p class="text-xs text-slate-400 mb-6" data-i18n="roi_res_sub">بناءً على نسبة أتمتة تقديرية تبلغ 70%.</p>
+                    <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-6">
+                        <div>
+                            <span class="block text-xs text-slate-400 mb-1" data-i18n="roi_hours_lbl">الساعات الموفرة شهرياً</span>
+                            <span class="text-xl font-bold text-slate-200" id="saved-hours">224 ساعة</span>
+                        </div>
+                        <div>
+                            <span class="block text-xs text-slate-400 mb-1" data-i18n="roi_annual_lbl">التوفير السنوي</span>
+                            <span class="text-xl font-bold text-slate-200" id="annual-saving">$67,200</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-2">
+                            <span data-i18n="roi_emp_count">عدد الموظفين:</span>
+                            <span id="val-emp" class="text-blue-400">10</span>
+                        </div>
+                        <input type="range" id="employees" min="1" max="50" value="10" class="w-full accent-blue-500 cursor-pointer" oninput="calculateROI()">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-2">
+                            <span data-i18n="roi_hours_week">ساعات العمل اليدوي أسبوعياً:</span>
+                            <span id="val-hours" class="text-blue-400">8</span>
+                        </div>
+                        <input type="range" id="hours" min="1" max="40" value="8" class="w-full accent-blue-500 cursor-pointer" oninput="calculateROI()">
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm font-semibold mb-2">
+                            <span data-i18n="roi_hourly_cost">تكلفة الساعة ($):</span>
+                            <span id="val-cost" class="text-blue-400">25</span>
+                        </div>
+                        <input type="range" id="cost" min="10" max="100" value="25" class="w-full accent-blue-500 cursor-pointer" oninput="calculateROI()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Section -->
+    <section id="comparison" class="py-20 border-t border-slate-800/60">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4" data-i18n="comp_title">جدول مقارنة بين أبرز 3 منصات أتمتة</h2>
+                <p class="text-slate-400" data-i18n="comp_desc">مقارنة تفصيلية بين Make، Zapier، و n8n لمساعدتك على الاختيار.</p>
+            </div>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full text-right border-collapse bg-slate-800/30 rounded-2xl overflow-hidden border border-slate-700/60">
+                    <thead>
+                        <tr class="border-b border-slate-700 text-slate-300 text-sm bg-slate-800/80">
+                            <th class="py-4 px-6" data-i18n="comp_th1">المعيار</th>
+                            <th class="py-4 px-6 text-blue-400 font-bold">Make.com</th>
+                            <th class="py-4 px-6 text-purple-400 font-bold">Zapier</th>
+                            <th class="py-4 px-6 text-emerald-400 font-bold">n8n</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-800/80 text-sm">
+                        <tr>
+                            <td class="py-4 px-6 font-semibold" data-i18n="comp_r1">سهولة الاستخدام</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r1_make">ممتازة (مرئي وسحب وإفلات)</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r1_zap">سهلة جداً للمبتدئين</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r1_n8n">متوسطة (تتطلب بعض الخبرة)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold" data-i18n="comp_r2">التكلفة والأسعار</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r2_make">منخفضة مقابل القيمة (اقتصادية)</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r2_zap">مرتفعة نسبياً للعمليات الكبيرة</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r2_n8n">منخفضة جداً أو مجانية للاستضافة الذاتية</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold" data-i18n="comp_r3">تعدد العمليات والربط</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r3_make">مرن جداً ومعقد البناء</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r3_zap">أكبر عدد تطبيقات مدعومة</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r3_n8n">تحكم كامل وتخصيص بالكامل</td>
+                        </tr>
+                        <tr>
+                            <td class="py-4 px-6 font-semibold" data-i18n="comp_r4">مناسب لـ</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r4_make">المشاريع المتوسطة والسيناريوهات المتقدمة</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r4_zap">المبتدئين والشركات التي تبحث عن السرعة</td>
+                            <td class="py-4 px-6 text-slate-300" data-i18n="comp_r4_n8n">المطورين والشركات التقنية الكبرى</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- خانة الخلاصة -->
+            <div class="mt-8 bg-blue-600/10 border border-blue-500/30 p-6 rounded-2xl text-slate-300 text-sm leading-relaxed">
+                <h3 class="font-bold text-blue-400 text-base mb-2 flex items-center gap-2">
+                    <span>📌</span> <span data-i18n="summary_title">الخلاصة والتوجيه:</span>
+                </h3>
+                <p data-i18n="summary_desc">
+                    إذا كنت تبحث عن التوازن المثالي بين السعر والقدرة المرئية البصرية، فـ <b>Make</b> هو الخيار الأفضل. وإذا كنت تبحث عن أسهل وأسرع ربط دون تعقيد مهما كانت التكلفة، فـ <b>Zapier</b> هو طلبك. أما إذا كنت تقني وتملك مهارات وتريد تحكماً كاملاً بأقل تكلفة، فـ <b>n8n</b> هو خيارك الأنسب.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="py-20 border-t border-slate-800/60 bg-slate-900/50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4" data-i18n="platforms_title">المنصات الثلاث الموصى بها</h2>
+                <p class="text-slate-400" data-i18n="platforms_desc">اختر المنصة التي تناسب عملك والبدء الآن.</p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Make Card -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-3xl flex flex-col justify-between hover:border-blue-500/50 transition-all hover:shadow-lg hover:shadow-blue-500/10">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-blue-400">Make.com</h3>
+                            <span class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-1 rounded-full font-semibold" data-i18n="badge_make">الأفضل قيمة</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-6" data-i18n="p1_sub">منصة مرئية قوية لبناء الأتمتة المعقدة والسيناريوهات المتقدمة.</p>
+                        <div class="text-3xl font-extrabold mb-6">$9 <span class="text-xs text-slate-400 font-normal" data-i18n="price_mo">/ شهرياً تبدأ</span></div>
+                        <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                            <li class="flex items-center gap-2" data-i18n="p1_f1">✓ واجهة سحب وإفلات بصرية متقدمة</li>
+                            <li class="flex items-center gap-2" data-i18n="p1_f2">✓ عمليات تنفيذ سريعة وفعالة من حيث التكلفة</li>
+                            <li class="flex items-center gap-2" data-i18n="p1_f3">✓ دعم أدوات الذكاء الاصطناعي والتطبيقات</li>
+                        </ul>
+                    </div>
+                    <a href="https://www.make.com" target="_blank" rel="noopener noreferrer" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-blue-600/30" data-i18n="btn_subscribe">
+                        اشترك في Make الآن
+                    </a>
+                </div>
+
+                <!-- Zapier Card -->
+                <div class="bg-slate-800/80 border-2 border-purple-500/80 p-8 rounded-3xl flex flex-col justify-between relative shadow-2xl hover:shadow-2xl hover:shadow-purple-500/20 transition-all">
+                    <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-600 text-white text-xs px-3 py-1 rounded-full font-semibold" data-i18n="badge_zapier">الأكثر شعبية</div>
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-purple-400">Zapier</h3>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-6" data-i18n="p2_sub">المعيار العالمي الأول لسهولة ربط التطبيقات دون عناء.</p>
+                        <div class="text-3xl font-extrabold mb-6">$19.99 <span class="text-xs text-slate-400 font-normal" data-i18n="price_mo">/ شهرياً تبدأ</span></div>
+                        <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                            <li class="flex items-center gap-2" data-i18n="p2_f1">✓ يدعم أكثر من 5,000+ تطبيق عالمي</li>
+                            <li class="flex items-center gap-2" data-i18n="p2_f2">✓ إعداد سهل للغاية للمبتدئين</li>
+                            <li class="flex items-center gap-2" data-i18n="p2_f3">✓ موثوقية عالية واستقرار مستمر</li>
+                        </ul>
+                    </div>
+                    <a href="https://zapier.com" target="_blank" rel="noopener noreferrer" class="w-full bg-purple-600 hover:bg-purple-700 text-white text-center py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-purple-600/30" data-i18n="btn_subscribe">
+                        اشترك في Zapier الآن
+                    </a>
+                </div>
+
+                <!-- n8n Card -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-3xl flex flex-col justify-between hover:border-emerald-500/50 transition-all hover:shadow-lg hover:shadow-emerald-500/10">
+                    <div>
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-xl font-bold text-emerald-400">n8n.io</h3>
+                            <span class="bg-emerald-500/10 text-emerald-400 text-xs px-2.5 py-1 rounded-full font-semibold" data-i18n="badge_n8n">للمحترفين</span>
+                        </div>
+                        <p class="text-xs text-slate-400 mb-6" data-i18n="p3_sub">منصة مرنة وقوية تتيح الاستضافة الذاتية والتحكم الكامل بالبيانات.</p>
+                        <div class="text-3xl font-extrabold mb-6">€20 <span class="text-xs text-slate-400 font-normal" data-i18n="price_mo">/ شهرياً (أو مجاني)</span></div>
+                        <ul class="space-y-3 text-sm text-slate-300 mb-8">
+                            <li class="flex items-center gap-2" data-i18n="p3_f1">✓ إمكانية الاستضافة الذاتية (Self-hosted)</li>
+                            <li class="flex items-center gap-2" data-i18n="p3_f2">✓ تكلفة منخفضة جداً للعمليات الضخمة</li>
+                            <li class="flex items-center gap-2" data-i18n="p3_f3">✓ مرونة عالية وكود مخصص للمطورين</li>
+                        </ul>
+                    </div>
+                    <a href="https://n8n.io" target="_blank" rel="noopener noreferrer" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white text-center py-3 rounded-xl font-semibold transition-colors shadow-lg shadow-emerald-600/30" data-i18n="btn_subscribe">
+                        اشترك في n8n الآن
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="py-20 border-t border-slate-800/60">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold mb-4" data-i18n="faq_title">الأسئلة الشائعة</h2>
+                <p class="text-slate-400" data-i18n="faq_desc">إجابات على أكثر الأسئلة شيوعاً حول الأتمتة ومنصاتنا الموصى بها.</p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ Item 1 -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all" onclick="toggleFAQ(0)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold" data-i18n="faq_q1">ما الفرق بين Make و Zapier؟</h3>
+                        <span class="text-2xl transition-transform" id="faq-icon-0">+</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4 hidden" id="faq-ans-0" data-i18n="faq_a1">
+                        Make توفر واجهة مرئية أكثر مرونة للسيناريوهات المعقدة وأسعار منخفضة، بينما Zapier تركز على البساطة والسهولة وتدعم عدد تطبيقات أكبر. Zapier أفضل للمبتدئين، و Make أفضل لمن يريد تحكماً أكثر.
+                    </p>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all" onclick="toggleFAQ(1)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold" data-i18n="faq_q2">هل يمكنني استخدام n8n مجاناً؟</h3>
+                        <span class="text-2xl transition-transform" id="faq-icon-1">+</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4 hidden" id="faq-ans-1" data-i18n="faq_a2">
+                        نعم! n8n توفر نسخة مجانية تماماً للاستضافة الذاتية (Self-hosted). يمكنك تثبيتها على خادمك الخاص وتشغيلها بدون تكاليف إضافية. لكن تحتاج لمهارات تقنية أكثر.
+                    </p>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all" onclick="toggleFAQ(2)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold" data-i18n="faq_q3">كم سأوفر من المال باستخدام الأتمتة؟</h3>
+                        <span class="text-2xl transition-transform" id="faq-icon-2">+</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4 hidden" id="faq-ans-2" data-i18n="faq_a3">
+                        يعتمد على حجم العمل اليدوي لديك. استخدم حاسبة ROI الخاصة بنا أعلى الصفحة لحساب التوفير المتوقع بناءً على عدد موظفيك والساعات المقضية في العمل اليدوي.
+                    </p>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all" onclick="toggleFAQ(3)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold" data-i18n="faq_q4">هل تدعم هذه المنصات اللغة العربية؟</h3>
+                        <span class="text-2xl transition-transform" id="faq-icon-3">+</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4 hidden" id="faq-ans-3" data-i18n="faq_a4">
+                        Make و Zapier و n8n تدعم واجهات بلغات متعددة، لكن قد لا تكون العربية مدعومة بشكل كامل. معظم الإعدادات تكون بالإنجليزية، لكن المحتوى والبيانات يمكن أن تكون بأي لغة.
+                    </p>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all" onclick="toggleFAQ(4)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold" data-i18n="faq_q5">هل أحتاج لمهارات برمجية لاستخدام هذه المنصات؟</h3>
+                        <span class="text-2xl transition-transform" id="faq-icon-4">+</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4 hidden" id="faq-ans-4" data-i18n="faq_a5">
+                        Zapier و Make لا تحتاج لمهارات برمجية - واجهة السحب والإفلات كافية. أما n8n فتتطلب معرفة تقنية أساسية، خاصة للسيناريوهات المتقدمة.
+                    </p>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="bg-slate-800/40 border border-slate-700/60 p-6 rounded-2xl cursor-pointer hover:border-blue-500/50 transition-all" onclick="toggleFAQ(5)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-lg font-semibold" data-i18n="faq_q6">ما الذي يجب أن أختاره إذا كنت مبتدئاً؟</h3>
+                        <span class="text-2xl transition-transform" id="faq-icon-5">+</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4 hidden" id="faq-ans-5" data-i18n="faq_a6">
+                        نوصيك ببدء استخدام Zapier إذا كنت مبتدئاً - إنها الأسهل والأكثر شعبية. بمجرد اكتساب الخبرة، يمكنك الانتقال إلى Make لمزيد من المرونة أو n8n للتحكم الكامل.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter Section -->
+    <section class="py-16 border-t border-slate-800/60 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold mb-4" data-i18n="newsletter_title">ابقَ على اطلاع دائم</h2>
+            <p class="text-slate-400 mb-8" data-i18n="newsletter_desc">اشترك في رسالتنا البريدية للحصول على نصائح وتحديثات حول الأتمتة.</p>
+            <form onsubmit="handleNewsletter(event)" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
+                <input type="email" placeholder="بريدك الإلكتروني" class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors" required>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors whitespace-nowrap" data-i18n="newsletter_btn">اشترك</button>
+            </form>
+            <p class="text-xs text-slate-500 mt-3" data-i18n="newsletter_privacy">لن نشارك بريدك مع أحد. إلغاء الاشتراك في أي وقت.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-16 border-t border-slate-800/60 bg-slate-900/80">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <h3 class="font-bold text-lg mb-4" data-i18n="footer_about">عن SaaSAutomate</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed" data-i18n="footer_about_desc">منصة محايدة وموثوقة لمقارنة أدوات الأتمتة والمساعدة في اتخاذ أفضل قرار لعملك.</p>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4" data-i18n="footer_links">الروابط</h3>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="#features" class="hover:text-blue-400 transition-colors" data-i18n="footer_features">المميزات</a></li>
+                        <li><a href="#comparison" class="hover:text-blue-400 transition-colors" data-i18n="footer_comparison">المقارنة</a></li>
+                        <li><a href="#pricing" class="hover:text-blue-400 transition-colors" data-i18n="footer_pricing">الأسعار</a></li>
+                        <li><a href="#faq" class="hover:text-blue-400 transition-colors" data-i18n="footer_faq">الأسئلة الشائعة</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4" data-i18n="footer_platforms">المنصات</h3>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="https://www.make.com" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">Make.com</a></li>
+                        <li><a href="https://zapier.com" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">Zapier</a></li>
+                        <li><a href="https://n8n.io" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">n8n.io</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-bold mb-4" data-i18n="footer_legal">قانوني</h3>
+                    <ul class="space-y-2 text-sm text-slate-400">
+                        <li><a href="privacy.html" class="hover:text-blue-400 transition-colors" data-i18n="footer_privacy">سياسة الخصوصية</a></li>
+                        <li><a href="terms.html" class="hover:text-blue-400 transition-colors" data-i18n="footer_terms">شروط الاستخدام</a></li>
+                        <li><a href="contact.html" class="hover:text-blue-400 transition-colors" data-i18n="footer_contact">اتصل بنا</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800/60 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-slate-500 text-sm" data-i18n="footer_copyright">© 2024 SaaSAutomate. جميع الحقوق محفوظة.</p>
+                <div class="flex gap-4 mt-4 md:mt-0">
+                    <a href="#" class="text-slate-400 hover:text-blue-400 transition-colors">Twitter</a>
+                    <a href="#" class="text-slate-400 hover:text-blue-400 transition-colors">LinkedIn</a>
+                    <a href="#" class="text-slate-400 hover:text-blue-400 transition-colors">GitHub</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/translations.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
