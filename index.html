@@ -118,21 +118,230 @@
                 الدليل الشامل لأفضل أدوات الأتمتة
             </span>
             <h1 class="text-4xl md:text-6xl font-bold tracking-tight mb-6 leading-tight fade-in-up" data-i18n="hero_title">
-                قارن واختر أفضل منصة لأتمتة أعمالك وتوفير مئات الساعات
+                اعرف أداة الأتمتة المناسبة لك في أقل من دقيقة
             </h1>
             <p class="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed fade-in-up" data-i18n="hero_desc">
-                تحليل محايد ودقيق لأبرز منصات الأتمتة العالمية لمساعدتك في اتخاذ القرار الصحيح وتطوير عملك.
+                أجب عن بعض الأسئلة حول عملك وميزانيتك وخبرتك، وسنقارن احتياجاتك مع Make وZapier وn8n لنقترح الخيار الأنسب لك.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-4 fade-in-up">
-                <a href="#comparison" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-xl shadow-blue-500/20" data-i18n="hero_btn1">
-                    مقارنة المنصات
+                <a href="#quiz-section" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-8 py-3.5 rounded-xl transition-all shadow-xl shadow-blue-500/20" data-i18n="hero_btn1_quiz">
+                    اكتشف منصتك
                 </a>
-                <a href="#roi" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold px-8 py-3.5 rounded-xl transition-all" data-i18n="hero_btn2">
-                    حاسبة التوفير
+                <a href="#comparison" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-semibold px-8 py-3.5 rounded-xl transition-all" data-i18n="hero_btn2_comparison">
+                    شاهد المقارنة
                 </a>
             </div>
         </div>
     </header>
+
+    <!-- Quiz Section (Phase 2 & 3 Smart Recommendation) -->
+    <section id="quiz-section" class="py-20 border-t border-slate-800/60 bg-slate-900/50">
+        <div class="max-w-4xl mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4" data-i18n="quiz_title">ما هي أفضل منصة أتمتة لك؟</h2>
+                <p class="text-slate-400" data-i18n="quiz_desc">أجب عن 6 أسئلة سريعة لنحدد لك المنصة الأكثر ملاءمة لاحتياجاتك بدقة.</p>
+            </div>
+
+            <!-- Quiz Wizard Card -->
+            <div class="bg-slate-800/40 border border-slate-700/60 p-8 md:p-12 rounded-3xl relative min-h-[400px] flex flex-col justify-between">
+
+                <!-- Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex justify-between text-xs text-slate-400 mb-2 font-semibold">
+                        <span id="quiz-progress-text">السؤال 1 من 6</span>
+                        <span id="quiz-progress-percent">17%</span>
+                    </div>
+                    <div class="w-full bg-slate-700 rounded-full h-2 overflow-hidden">
+                        <div id="quiz-progress-bar" class="bg-blue-500 h-2 rounded-full transition-all duration-300" style="width: 17%"></div>
+                    </div>
+                </div>
+
+                <!-- Quiz Steps Container -->
+                <div id="quiz-steps">
+                    <!-- Step 1 -->
+                    <div class="quiz-step" data-step="1">
+                        <h3 class="text-xl font-bold mb-6 text-slate-100" data-i18n="quiz_q1_text">السؤال 1: ما هو مستوى خبرتك التقنية؟</h3>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <button onclick="selectOption(1, 'beginner')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🌱</span>
+                                <span class="font-semibold" data-i18n="quiz_q1_o1">مبتدئ (لا أكود)</span>
+                            </button>
+                            <button onclick="selectOption(1, 'intermediate')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">⚡</span>
+                                <span class="font-semibold" data-i18n="quiz_q1_o2">متوسط (أفهم الـ APIs)</span>
+                            </button>
+                            <button onclick="selectOption(1, 'expert')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">💻</span>
+                                <span class="font-semibold" data-i18n="quiz_q1_o3">مطور / محترف</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="quiz-step hidden" data-step="2">
+                        <h3 class="text-xl font-bold mb-6 text-slate-100" data-i18n="quiz_q2_text">السؤال 2: ما هو هدفك الرئيسي من الأتمتة؟</h3>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <button onclick="selectOption(2, 'daily')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">📅</span>
+                                <span class="font-semibold text-sm" data-i18n="quiz_q2_o1">أتمتة مهام يومية بسيطة</span>
+                            </button>
+                            <button onclick="selectOption(2, 'marketing')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">📣</span>
+                                <span class="font-semibold text-sm" data-i18n="quiz_q2_o2">التسويق والمبيعات</span>
+                            </button>
+                            <button onclick="selectOption(2, 'integrations')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">⚡</span>
+                                <span class="font-semibold text-sm" data-i18n="quiz_q2_o3">ربط عدد كبير من التطبيقات</span>
+                            </button>
+                            <button onclick="selectOption(2, 'data')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">📊</span>
+                                <span class="font-semibold text-sm" data-i18n="quiz_q2_o4">معالجة البيانات الضخمة</span>
+                            </button>
+                            <button onclick="selectOption(2, 'complex')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">🛠️</span>
+                                <span class="font-semibold text-sm" data-i18n="quiz_q2_o5">بناء سيناريوهات معقدة</span>
+                            </button>
+                            <button onclick="selectOption(2, 'ai')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">🤖</span>
+                                <span class="font-semibold text-sm" data-i18n="quiz_q2_o6">دمج الذكاء الاصطناعي (AI)</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="quiz-step hidden" data-step="3">
+                        <h3 class="text-xl font-bold mb-6 text-slate-100" data-i18n="quiz_q3_text">السؤال 3: ما هي الميزانية الشهرية المقدرة؟</h3>
+                        <div class="grid sm:grid-cols-4 gap-4">
+                            <button onclick="selectOption(3, 'free')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">💸</span>
+                                <span class="font-semibold text-xs" data-i18n="quiz_q3_o1">أريد خطة مجانية</span>
+                            </button>
+                            <button onclick="selectOption(3, 'low')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">💵</span>
+                                <span class="font-semibold text-xs" data-i18n="quiz_q3_o2">أقل من 20$ شهرياً</span>
+                            </button>
+                            <button onclick="selectOption(3, 'medium')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">💳</span>
+                                <span class="font-semibold text-xs" data-i18n="quiz_q3_o3">20$ - 50$ شهرياً</span>
+                            </button>
+                            <button onclick="selectOption(3, 'high')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-5 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-2xl">💎</span>
+                                <span class="font-semibold text-xs" data-i18n="quiz_q3_o4">أكثر من 50$ شهرياً</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="quiz-step hidden" data-step="4">
+                        <h3 class="text-xl font-bold mb-6 text-slate-100" data-i18n="quiz_q4_text">السؤال 4: هل تفضل تشغيل النظام بالكامل على خادمك الخاص (Self-Hosting)؟</h3>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <button onclick="selectOption(4, 'yes')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🖥️</span>
+                                <span class="font-semibold" data-i18n="quiz_q4_o1">نعم (تحكم كامل)</span>
+                            </button>
+                            <button onclick="selectOption(4, 'no')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">☁️</span>
+                                <span class="font-semibold" data-i18n="quiz_q4_o2">لا (تخزين سحابي جاهز)</span>
+                            </button>
+                            <button onclick="selectOption(4, 'maybe')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🤔</span>
+                                <span class="font-semibold" data-i18n="quiz_q4_o3">لا أعلم / غير متأكد</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 5 -->
+                    <div class="quiz-step hidden" data-step="5">
+                        <h3 class="text-xl font-bold mb-6 text-slate-100" data-i18n="quiz_q5_text">السؤال 5: ما هو مستوى التحكم البرمجي المطلوب؟</h3>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <button onclick="selectOption(5, 'simple')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🎯</span>
+                                <span class="font-semibold" data-i18n="quiz_q5_o1">بسيط وتلقائي بالكامل</span>
+                            </button>
+                            <button onclick="selectOption(5, 'medium')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🎛️</span>
+                                <span class="font-semibold" data-i18n="quiz_q5_o2">مرونة متوسطة في الإعداد</span>
+                            </button>
+                            <button onclick="selectOption(5, 'full')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🧱</span>
+                                <span class="font-semibold" data-i18n="quiz_q5_o3">تحكم وتخصيص كلي</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 6 -->
+                    <div class="quiz-step hidden" data-step="6">
+                        <h3 class="text-xl font-bold mb-6 text-slate-100" data-i18n="quiz_q6_text">السؤال 6: ما هو حجم الاستخدام المتوقع (عدد العمليات شهرياً)؟</h3>
+                        <div class="grid sm:grid-cols-3 gap-4">
+                            <button onclick="selectOption(6, 'small')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">📦</span>
+                                <span class="font-semibold" data-i18n="quiz_q6_o1">صغير (أقل من 1000 عملية)</span>
+                            </button>
+                            <button onclick="selectOption(6, 'medium')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">⚡</span>
+                                <span class="font-semibold" data-i18n="quiz_q6_o2">متوسط (1000 - 10000 عملية)</span>
+                            </button>
+                            <button onclick="selectOption(6, 'large')" class="quiz-opt-btn bg-slate-900/80 border border-slate-700 hover:border-blue-500 hover:bg-slate-800 text-slate-200 p-6 rounded-2xl text-center transition-all flex flex-col items-center justify-center gap-3">
+                                <span class="text-3xl">🚀</span>
+                                <span class="font-semibold" data-i18n="quiz_q6_o3">كبير (أكثر من 10000 عملية)</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Output Block (Phase 3 Details) -->
+                <div id="quiz-results" class="hidden text-center md:text-start">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-100 text-center" data-i18n="quiz_res_header">النتيجة والتوصية المناسبة لك</h3>
+
+                    <div class="grid md:grid-cols-3 gap-8 items-stretch mb-8">
+                        <!-- Best Fit platform -->
+                        <div class="md:col-span-2 bg-slate-900/80 border-2 border-blue-500/80 p-8 rounded-2xl shadow-xl flex flex-col justify-between">
+                            <div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider" data-i18n="quiz_best_badge">الخيار الموصى به</span>
+                                    <span id="best-match-percent" class="text-blue-400 font-extrabold text-2xl">95%</span>
+                                </div>
+                                <h4 id="best-platform-title" class="text-3xl font-extrabold mb-4 text-slate-100">Make.com</h4>
+                                <p id="best-platform-reason" class="text-slate-300 text-sm leading-relaxed mb-6">مناسب جداً لاحتياجاتك نظراً للمرونة العالية، انخفاض تكلفة العمليات البرمجية، وواجهة السحب والإفلات المميزة.</p>
+
+                                <div class="border-t border-slate-800 pt-4 mb-6">
+                                    <h5 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3" data-i18n="quiz_why_lbl">لماذا تختاره؟</h5>
+                                    <ul id="best-platform-pros" class="space-y-2 text-sm text-slate-300">
+                                        <!-- Pros list dynamically updated -->
+                                    </ul>
+                                </div>
+                            </div>
+                            <a id="best-platform-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full bg-blue-600 hover:bg-blue-700 text-white text-center py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 text-base" data-i18n="quiz_start_btn">
+                                ابدأ مع هذه المنصة الآن
+                            </a>
+                        </div>
+
+                        <!-- Alternatives & Scores -->
+                        <div class="bg-slate-900/50 border border-slate-700/60 p-6 rounded-2xl flex flex-col justify-between">
+                            <div>
+                                <h4 class="font-bold text-slate-300 text-sm mb-4" data-i18n="quiz_alt_scores">درجات تطابق البدائل</h4>
+                                <div class="space-y-4" id="alt-platforms-list">
+                                    <!-- Alternative items loaded dynamically -->
+                                </div>
+                            </div>
+                            <button onclick="resetQuiz()" class="w-full mt-6 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 py-2.5 rounded-xl text-sm font-semibold transition-colors" data-i18n="quiz_reset_btn">
+                                إعادة المحاولة
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Nav buttons -->
+                <div class="flex justify-between items-center border-t border-slate-700/50 pt-6 mt-8" id="quiz-footer-nav">
+                    <button id="quiz-prev-btn" onclick="prevStep()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors border border-slate-700 flex items-center gap-2 invisible">
+                        <span>←</span> <span data-i18n="quiz_back">السابق</span>
+                    </button>
+                    <span class="text-slate-500 text-xs font-medium" data-i18n="quiz_helper_hint">اختر إجابة للمتابعة تلقائياً</span>
+                </div>
+
+            </div>
+        </div>
+    </section>
 
     <!-- Features Section -->
     <section id="features" class="py-20 border-t border-slate-800/60">

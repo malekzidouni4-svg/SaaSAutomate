@@ -2,11 +2,17 @@
 let currentLang = localStorage.getItem('lang') || 'ar';
 let isDarkMode = localStorage.getItem('theme') !== 'light';
 
+// Quiz State
+let quizAnswers = {};
+let currentQuizStep = 1;
+const totalQuizSteps = 6;
+
 // ===== Initialize on Page Load =====
 document.addEventListener('DOMContentLoaded', () => {
     initializeLanguage();
     initializeTheme();
     calculateROI();
+    updateQuizUI();
 });
 
 // ===== Language Functions =====
@@ -20,6 +26,12 @@ function toggleLanguage() {
     localStorage.setItem('lang', currentLang);
     applyLanguage(currentLang);
     document.getElementById('lang-btn').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+
+    // Recalculate ROI and refresh quiz results if visible to match active language
+    calculateROI();
+    if (document.getElementById('quiz-steps').classList.contains('hidden')) {
+        calculateQuizScore();
+    }
 }
 
 function applyLanguage(lang) {
@@ -39,6 +51,20 @@ function applyLanguage(lang) {
             element.textContent = translations[lang][key];
         }
     });
+
+    // Update placeholders if any
+    const emailInput = document.querySelector('input[type="email"]');
+    if (emailInput) {
+        emailInput.placeholder = lang === 'ar' ? 'بريدك الإلكتروني' : 'Your Email';
+    }
+
+    // Update Quiz progress text
+    const progressText = document.getElementById('quiz-progress-text');
+    if (progressText && currentQuizStep <= totalQuizSteps) {
+        progressText.textContent = lang === 'ar'
+            ? `السؤال ${currentQuizStep} من ${totalQuizSteps}`
+            : `Question ${currentQuizStep} of ${totalQuizSteps}`;
+    }
 }
 
 // ===== Theme Functions =====
@@ -62,6 +88,322 @@ function toggleTheme() {
         document.body.classList.add('light-mode');
         document.getElementById('theme-btn').textContent = '🌙';
     }
+}
+
+// ===== Quiz Logic (Phase 2 & 3 Smart Recommendation) =====
+function selectOption(step, value) {
+    quizAnswers[step] = value;
+
+    if (step < totalQuizSteps) {
+        currentQuizStep = step + 1;
+        updateQuizUI();
+    } else {
+        // Quiz complete - calculate and show results
+        calculateQuizScore();
+    }
+}
+
+function prevStep() {
+    if (currentQuizStep > 1) {
+        currentQuizStep--;
+        updateQuizUI();
+    }
+}
+
+function updateQuizUI() {
+    // Show current step, hide others
+    const steps = document.querySelectorAll('.quiz-step');
+    steps.forEach(stepEl => {
+        const stepNum = parseInt(stepEl.dataset.step);
+        if (stepNum === currentQuizStep) {
+            stepEl.classList.remove('hidden');
+        } else {
+            stepEl.classList.add('hidden');
+        }
+    });
+
+    // Show/hide Quiz container & Results
+    document.getElementById('quiz-steps').classList.remove('hidden');
+    document.getElementById('quiz-results').classList.add('hidden');
+    document.getElementById('quiz-footer-nav').classList.remove('hidden');
+
+    // Update Progress Bar
+    const progressPercent = Math.round(((currentQuizStep) / totalQuizSteps) * 100);
+    const progressBar = document.getElementById('quiz-progress-bar');
+    const progressPercentText = document.getElementById('quiz-progress-percent');
+    const progressText = document.getElementById('quiz-progress-text');
+
+    if (progressBar) progressBar.style.width = `${progressPercent}%`;
+    if (progressPercentText) progressPercentText.textContent = `${progressPercent}%`;
+    if (progressText) {
+        progressText.textContent = currentLang === 'ar'
+            ? `السؤال ${currentQuizStep} من ${totalQuizSteps}`
+            : `Question ${currentQuizStep} of ${totalQuizSteps}`;
+    }
+
+    // Manage Previous Button Visibility
+    const prevBtn = document.getElementById('quiz-prev-btn');
+    if (prevBtn) {
+        if (currentQuizStep > 1) {
+            prevBtn.classList.remove('invisible');
+        } else {
+            prevBtn.classList.add('invisible');
+        }
+    }
+}
+
+function calculateQuizScore() {
+    // Platform Base profiles matching quiz variables
+    let scores = { make: 0, zapier: 0, n8n: 0 };
+
+    // Q1 (Experience)
+    const exp = quizAnswers[1];
+    if (exp === 'beginner') {
+        scores.zapier += 4;
+        scores.make += 2;
+        scores.n8n += 0;
+    } else if (exp === 'intermediate') {
+        scores.make += 4;
+        scores.zapier += 3;
+        scores.n8n += 2;
+    } else if (exp === 'expert') {
+        scores.n8n += 5;
+        scores.make += 3;
+        scores.zapier += 1;
+    }
+
+    // Q2 (Goal)
+    const goal = quizAnswers[2];
+    if (goal === 'daily') {
+        scores.zapier += 4;
+        scores.make += 3;
+        scores.n8n += 1;
+    } else if (goal === 'marketing') {
+        scores.zapier += 4;
+        scores.make += 4;
+        scores.n8n += 1;
+    } else if (goal === 'integrations') {
+        scores.zapier += 5;
+        scores.make += 3;
+        scores.n8n += 2;
+    } else if (goal === 'data') {
+        scores.n8n += 5;
+        scores.make += 3;
+        scores.zapier += 1;
+    } else if (goal === 'complex') {
+        scores.make += 5;
+        scores.n8n += 5;
+        scores.zapier += 1;
+    } else if (goal === 'ai') {
+        scores.make += 4;
+        scores.n8n += 4;
+        scores.zapier += 2;
+    }
+
+    // Q3 (Budget)
+    const budget = quizAnswers[3];
+    if (budget === 'free') {
+        scores.n8n += 5; // self-hosted is free
+        scores.make += 2;
+        scores.zapier += 0;
+    } else if (budget === 'low') {
+        scores.make += 4;
+        scores.n8n += 4;
+        scores.zapier += 1;
+    } else if (budget === 'medium') {
+        scores.make += 4;
+        scores.zapier += 3;
+        scores.n8n += 2;
+    } else if (budget === 'high') {
+        scores.zapier += 5;
+        scores.make += 3;
+        scores.n8n += 1;
+    }
+
+    // Q4 (Self-hosting)
+    const hosting = quizAnswers[4];
+    if (hosting === 'yes') {
+        scores.n8n += 6;
+        scores.make += 0;
+        scores.zapier += 0;
+    } else if (hosting === 'no') {
+        scores.zapier += 4;
+        scores.make += 4;
+        scores.n8n += 1;
+    } else if (hosting === 'maybe') {
+        scores.make += 4;
+        scores.zapier += 3;
+        scores.n8n += 3;
+    }
+
+    // Q5 (Control level)
+    const control = quizAnswers[5];
+    if (control === 'simple') {
+        scores.zapier += 5;
+        scores.make += 3;
+        scores.n8n += 1;
+    } else if (control === 'medium') {
+        scores.make += 5;
+        scores.zapier += 3;
+        scores.n8n += 3;
+    } else if (control === 'full') {
+        scores.n8n += 6;
+        scores.make += 3;
+        scores.zapier += 0;
+    }
+
+    // Q6 (Usage size)
+    const volume = quizAnswers[6];
+    if (volume === 'small') {
+        scores.zapier += 4;
+        scores.make += 3;
+        scores.n8n += 2;
+    } else if (volume === 'medium') {
+        scores.make += 4;
+        scores.zapier += 3;
+        scores.n8n += 3;
+    } else if (volume === 'large') {
+        scores.n8n += 6;
+        scores.make += 4;
+        scores.zapier += 1;
+    }
+
+    // Determine absolute match percentages (max potential points is around 30)
+    const maxScore = 32;
+    let matchPercentages = {
+        make: Math.min(98, Math.round((scores.make / maxScore) * 100) + 40),
+        zapier: Math.min(98, Math.round((scores.zapier / maxScore) * 100) + 40),
+        n8n: Math.min(98, Math.round((scores.n8n / maxScore) * 100) + 40)
+    };
+
+    // Sort platforms by percentage
+    let sortedMatches = Object.keys(matchPercentages).sort((a, b) => matchPercentages[b] - matchPercentages[a]);
+    let bestPlatform = sortedMatches[0];
+    let secondPlatform = sortedMatches[1];
+    let thirdPlatform = sortedMatches[2];
+
+    // Details for each platform
+    const platformDetails = {
+        make: {
+            title: "Make.com",
+            link: "https://www.make.com",
+            pros: {
+                ar: [
+                    "✓ واجهة سحب وإفلات بصرية متقدمة وسهلة الفهم",
+                    "✓ تكلفة عمليات منخفضة جداً وقيمة ممتازة مقابل السعر",
+                    "✓ يدعم بناء سيناريوهات متفرعة ومتشعبة بدون تعقيد برمجى",
+                    "✓ دعم قوي للذكاء الاصطناعي وربط مختلف الخدمات السحابية"
+                ],
+                en: [
+                    "✓ Advanced and intuitive drag-and-drop visual workflow builder",
+                    "✓ Very low execution costs and extreme value-for-money",
+                    "✓ Easily supports building complex multi-branched scenarios",
+                    "✓ Solid AI integration capabilities with over 1,000 global apps"
+                ]
+            },
+            reason: {
+                ar: "مناسب جداً لاحتياجاتك حيث يوفر التوازن المثالي بين القوة البصرية للواجهة، والتكلفة الاقتصادية الممتازة للعمليات المتكررة، دون الحاجة لخبرة برمجية عميقة.",
+                en: "Excellent fit for your needs as it offers the perfect sweet spot between visual ease of building, massive multi-branch capability, and incredibly affordable execution pricing."
+            }
+        },
+        zapier: {
+            title: "Zapier",
+            link: "https://zapier.com",
+            pros: {
+                ar: [
+                    "✓ أسهل وأبسط أداة للمبتدئين لبدء الأتمتة في ثوانٍ",
+                    "✓ يدعم أكبر عدد من التطبيقات عالمياً (أكثر من 5,000 تطبيق)",
+                    "✓ لا يحتاج لأي خبرة تقنية أو فهم لهياكل البيانات والمعطيات",
+                    "✓ استقرار عالي جداً وموثوقية ممتازة لربط المهام البسيطة"
+                ],
+                en: [
+                    "✓ Easiest and simplest tool for absolute beginners to start in seconds",
+                    "✓ Supports the largest directory of apps globally (5,000+ services)",
+                    "✓ Zero coding or technical background required",
+                    "✓ High reliability and continuous uptime stability for simple zaps"
+                ]
+            },
+            reason: {
+                ar: "مناسب لك للغاية نظراً لتركيزك على السهولة الفائقة والربط السريع والمباشر بين تطبيقاتك اليومية المفضلة دون تعقيد أو حاجة للبرمجة.",
+                en: "A wonderful match because you prioritize sheer simplicity, quick setup, and need access to the absolute widest ecosystem of applications without coding hassle."
+            }
+        },
+        n8n: {
+            title: "n8n.io",
+            link: "https://n8n.io",
+            pros: {
+                ar: [
+                    "✓ إمكانية الاستضافة الذاتية (Self-hosted) مجاناً بالكامل",
+                    "✓ تحكم مطلق 100% في بياناتك وخصوصيتها وأمنها",
+                    "✓ مرونة برمجية كاملة وكتابة كود مخصص (JavaScript/Python)",
+                    "✓ تكلفة صفرية تقريباً عند تشغيل ملايين المهام على خادمك"
+                ],
+                en: [
+                    "✓ Completely free to self-host on your own private server",
+                    "✓ 100% privacy and complete control over client data security",
+                    "✓ Unmatched developer flexibility with custom code nodes",
+                    "✓ Near-zero scaling costs when running millions of operations"
+                ]
+            },
+            reason: {
+                ar: "الخيار الأفضل للمحترفين والمطورين الذين يبحثون عن التحكم الكامل بأكوادهم وبنية خوادمهم والخصوصية المطلقة للبيانات بأقل تكلفة تشغيلية ممكنة.",
+                en: "The ultimate choice for technical developers and teams looking for full private server deployment, deep logical control, custom coding capabilities, and near-zero scaling fees."
+            }
+        }
+    };
+
+    // Update Results UI Elements
+    document.getElementById('quiz-steps').classList.add('hidden');
+    document.getElementById('quiz-results').classList.remove('hidden');
+    document.getElementById('quiz-footer-nav').classList.add('hidden');
+
+    const activeDetails = platformDetails[bestPlatform];
+    document.getElementById('best-platform-title').textContent = activeDetails.title;
+    document.getElementById('best-match-percent').textContent = `${matchPercentages[bestPlatform]}%`;
+    document.getElementById('best-platform-reason').textContent = activeDetails.reason[currentLang];
+    document.getElementById('best-platform-link').href = activeDetails.link;
+
+    // Update Pros List
+    const prosUl = document.getElementById('best-platform-pros');
+    prosUl.innerHTML = '';
+    activeDetails.pros[currentLang].forEach(proText => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center gap-2';
+        li.textContent = proText;
+        prosUl.appendChild(li);
+    });
+
+    // Update Alternatives
+    const altContainer = document.getElementById('alt-platforms-list');
+    altContainer.innerHTML = '';
+
+    const altList = [secondPlatform, thirdPlatform];
+    altList.forEach(platKey => {
+        const details = platformDetails[platKey];
+        const percent = matchPercentages[platKey];
+
+        const item = document.createElement('div');
+        item.className = 'border-b border-slate-800 pb-3 last:border-0';
+        item.innerHTML = `
+            <div class="flex justify-between items-center mb-1">
+                <span class="font-bold text-slate-200">${details.title}</span>
+                <span class="text-xs font-bold text-slate-400">${percent}%</span>
+            </div>
+            <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                <div class="bg-slate-500 h-1.5 rounded-full" style="width: ${percent}%"></div>
+            </div>
+        `;
+        altContainer.appendChild(item);
+    });
+
+    // Scroll to results cleanly
+    document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function resetQuiz() {
+    quizAnswers = {};
+    currentQuizStep = 1;
+    updateQuizUI();
 }
 
 // ===== ROI Calculator Functions =====
@@ -208,12 +550,6 @@ function shareOnTwitter() {
     trackEvent('share', 'twitter', 'homepage');
 }
 
-function shareOnLinkedIn() {
-    const url = window.location.href;
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${url}`, '_blank');
-    trackEvent('share', 'linkedin', 'homepage');
-}
-
 // ===== Contact Form Handler (if you add a contact form) =====
 function handleContactForm(event) {
     event.preventDefault();
@@ -245,6 +581,9 @@ if (typeof module !== 'undefined' && module.exports) {
         calculateROI,
         toggleFAQ,
         handleNewsletter,
-        isValidEmail
+        isValidEmail,
+        selectOption,
+        prevStep,
+        resetQuiz
     };
 }

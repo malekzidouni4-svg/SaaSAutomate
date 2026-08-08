@@ -12,11 +12,58 @@ const translations = {
     
     // Hero Section
     hero_badge: "الدليل الشامل لأفضل أدوات الأتمتة",
-    hero_title: "قارن واختر أفضل منصة لأتمتة أعمالك وتوفير مئات الساعات",
-    hero_desc: "تحليل محايد ودقيق لأبرز منصات الأتمتة العالمية لمساعدتك في اتخاذ القرار الصحيح وتطوير عملك.",
-    hero_btn1: "مقارنة المنصات",
-    hero_btn2: "حاسبة التوفير",
+    hero_title: "اعرف أداة الأتمتة المناسبة لك في أقل من دقيقة",
+    hero_desc: "أجب عن بعض الأسئلة حول عملك وميزانيتك وخبرتك، وسنقارن احتياجاتك مع Make وZapier وn8n لنقترح الخيار الأنسب لك.",
+    hero_btn1_quiz: "اكتشف منصتك",
+    hero_btn2_comparison: "شاهد المقارنة",
     
+    // Quiz Translations
+    quiz_title: "ما هي أفضل منصة أتمتة لك؟",
+    quiz_desc: "أجب عن 6 أسئلة سريعة لنحدد لك المنصة الأكثر ملاءمة لاحتياجاتك بدقة.",
+    quiz_back: "السابق",
+    quiz_helper_hint: "اختر إجابة للمتابعة تلقائياً",
+    quiz_res_header: "النتيجة والتوصية المناسبة لك",
+    quiz_best_badge: "الخيار الموصى به",
+    quiz_why_lbl: "لماذا تختاره؟",
+    quiz_start_btn: "ابدأ مع هذه المنصة الآن",
+    quiz_alt_scores: "درجات تطابق البدائل",
+    quiz_reset_btn: "إعادة المحاولة",
+
+    // Quiz Questions
+    quiz_q1_text: "السؤال 1: ما هو مستوى خبرتك التقنية؟",
+    quiz_q1_o1: "مبتدئ (لا أكود)",
+    quiz_q1_o2: "متوسط (أفهم الـ APIs)",
+    quiz_q1_o3: "مطور / محترف",
+
+    quiz_q2_text: "السؤال 2: ما هو هدفك الرئيسي من الأتمتة؟",
+    quiz_q2_o1: "أتمتة مهام يومية بسيطة",
+    quiz_q2_o2: "التسويق والمبيعات",
+    quiz_q2_o3: "ربط عدد كبير من التطبيقات",
+    quiz_q2_o4: "معالجة البيانات الضخمة",
+    quiz_q2_o5: "بناء سيناريوهات معقدة",
+    quiz_q2_o6: "دمج الذكاء الاصطناعي (AI)",
+
+    quiz_q3_text: "السؤال 3: ما هي الميزانية الشهرية المقدرة؟",
+    quiz_q3_o1: "أريد خطة مجانية",
+    quiz_q3_o2: "أقل من 20$ شهرياً",
+    quiz_q3_o3: "20$ - 50$ شهرياً",
+    quiz_q3_o4: "أكثر من 50$ شهرياً",
+
+    quiz_q4_text: "السؤال 4: هل تفضل تشغيل النظام بالكامل على خادمك الخاص (Self-Hosting)؟",
+    quiz_q4_o1: "نعم (تحكم كامل)",
+    quiz_q4_o2: "لا (تخزين سحابي جاهز)",
+    quiz_q4_o3: "لا أعلم / غير متأكد",
+
+    quiz_q5_text: "السؤال 5: ما هو مستوى التحكم البرمجي المطلوب؟",
+    quiz_q5_o1: "بسيط وتلقائي بالكامل",
+    quiz_q5_o2: "مرونة متوسطة في الإعداد",
+    quiz_q5_o3: "تحكم وتخصيص كلي",
+
+    quiz_q6_text: "السؤال 6: ما هو حجم الاستخدام المتوقع (عدد العمليات شهرياً)؟",
+    quiz_q6_o1: "صغير (أقل من 1000 عملية)",
+    quiz_q6_o2: "متوسط (1000 - 10000 عملية)",
+    quiz_q6_o3: "كبير (أكثر من 10000 عملية)",
+
     // Features Section
     feat_main_title: "لماذا تحتاج إلى أتمتة أعمالك؟",
     feat_main_desc: "رفع كفاءة العمل وتقليل الأخطاء البشرية عبر الربط الذكي.",
@@ -92,7 +139,7 @@ const translations = {
     faq_q3: "كم سأوفر من المال باستخدام الأتمتة؟",
     faq_a3: "يعتمد على حجم العمل اليدوي لديك. استخدم حاسبة ROI الخاصة بنا أعلى الصفحة لحساب التوفير المتوقع بناءً على عدد موظفيك والساعات المقضية في العمل اليدوي.",
     faq_q4: "هل تدعم هذه المنصات اللغة العربية؟",
-    faq_a4: "Make و Zapier و n8n تدعم واجهات ��لغات متعددة، لكن قد لا تكون العربية مدعومة بشكل كامل. معظم الإعدادات تكون بالإنجليزية، لكن المحتوى والبيانات يمكن أن تكون بأي لغة.",
+    faq_a4: "Make و Zapier و n8n تدعم واجهات بلغات متعددة، لكن قد لا تكون العربية مدعومة بشكل كامل. معظم الإعدادات تكون بالإنجليزية، لكن المحتوى والبيانات يمكن أن تكون بأي لغة.",
     faq_q5: "هل أحتاج لمهارات برمجية لاستخدام هذه المنصات؟",
     faq_a5: "Zapier و Make لا تحتاج لمهارات برمجية - واجهة السحب والإفلات كافية. أما n8n فتتطلب معرفة تقنية أساسية، خاصة للسيناريوهات المتقدمة.",
     faq_q6: "ما الذي يجب أن أختاره إذا كنت مبتدئاً؟",
@@ -132,11 +179,58 @@ const translations = {
     
     // Hero Section
     hero_badge: "The Complete Guide to the Best Automation Tools",
-    hero_title: "Compare and Choose the Best Platform to Automate Your Work and Save Hundreds of Hours",
-    hero_desc: "Neutral and accurate analysis of the best global automation platforms to help you make the right decision and grow your business.",
-    hero_btn1: "Compare Platforms",
-    hero_btn2: "Savings Calculator",
+    hero_title: "Find the Best Automation Tool for Your Business in under a minute",
+    hero_desc: "Answer a few questions about your business, budget, and experience, and we will compare your needs with Make, Zapier, and n8n to suggest the absolute best fit.",
+    hero_btn1_quiz: "Discover Your Platform",
+    hero_btn2_comparison: "View Comparison",
+
+    // Quiz Translations
+    quiz_title: "Which automation platform is best for you?",
+    quiz_desc: "Answer 6 quick questions to let us precisely determine the best automation platform for your exact needs.",
+    quiz_back: "Previous",
+    quiz_helper_hint: "Choose an option to continue automatically",
+    quiz_res_header: "Your Match Results & Recommendation",
+    quiz_best_badge: "RECOMMENDED CHOICE",
+    quiz_why_lbl: "Why is it best for you?",
+    quiz_start_btn: "Start with this platform now",
+    quiz_alt_scores: "Alternative platform matches",
+    quiz_reset_btn: "Try Again",
+
+    // Quiz Questions
+    quiz_q1_text: "Question 1: What is your level of technical experience?",
+    quiz_q1_o1: "Beginner (No coding experience)",
+    quiz_q1_o2: "Intermediate (Understand APIs/Webhooks)",
+    quiz_q1_o3: "Developer / Expert",
+
+    quiz_q2_text: "Question 2: What is your primary automation goal?",
+    quiz_q2_o1: "Automate simple daily tasks",
+    quiz_q2_o2: "Marketing and Sales operations",
+    quiz_q2_o3: "Connect a high volume of apps",
+    quiz_q2_o4: "Process heavy spreadsheet/DB data",
+    quiz_q2_o5: "Build advanced multi-branched scenarios",
+    quiz_q2_o6: "Integrate Artificial Intelligence (AI)",
+
+    quiz_q3_text: "Question 3: What is your estimated monthly budget?",
+    quiz_q3_o1: "I need a free tier",
+    quiz_q3_o2: "Less than $20 / month",
+    quiz_q3_o3: "$20 - $50 / month",
+    quiz_q3_o4: "More than $50 / month",
+
+    quiz_q4_text: "Question 4: Do you prefer self-hosting the platform on your own servers?",
+    quiz_q4_o1: "Yes (Complete server control)",
+    quiz_q4_o2: "No (Ready cloud storage)",
+    quiz_q4_o3: "No opinion / Not sure",
+
+    quiz_q5_text: "Question 5: What is your desired level of logic customizability?",
+    quiz_q5_o1: "Simple, visual, and highly automated",
+    quiz_q5_o2: "Moderate flexibility and visual rules",
+    quiz_q5_o3: "Full programmatic control and custom code",
     
+    quiz_q6_text: "Question 6: What is your expected monthly execution volume (tasks/operations)?",
+    quiz_q6_o1: "Small (under 1,000 operations)",
+    quiz_q6_o2: "Medium (1,000 - 10,000 operations)",
+    quiz_q6_o3: "Large (over 10,000 operations)",
+
     // Features Section
     feat_main_title: "Why Do You Need Business Automation?",
     feat_main_desc: "Increase work efficiency and reduce human errors through smart integration.",
