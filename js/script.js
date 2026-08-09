@@ -2,7 +2,7 @@
 let currentLang = localStorage.getItem('lang') || 'ar';
 let isDarkMode = localStorage.getItem('theme') !== 'light';
 
-// Quiz State
+// Quiz State (Phases 2 & 3 Smart Recommendation)
 let quizAnswers = {};
 let currentQuizStep = 1;
 const totalQuizSteps = 6;
@@ -11,9 +11,28 @@ const totalQuizSteps = 6;
 document.addEventListener('DOMContentLoaded', () => {
     initializeLanguage();
     initializeTheme();
+    renderComparisonTable();
+    renderPlatformCards();
     calculateROI();
     updateQuizUI();
+
+    // Log analytic event (Phase 19 & 20)
+    trackEvent('page_view', 'load', 'homepage');
 });
+
+// ===== Mobile Hamburger Navigation Menu Toggle (Phase 16) =====
+function toggleMobileMenu() {
+    const menu = document.getElementById('mobile-menu');
+    if (menu) {
+        if (menu.classList.contains('hidden')) {
+            menu.classList.remove('hidden');
+            trackEvent('navigation', 'mobile_menu_open', 'hamburger');
+        } else {
+            menu.classList.add('hidden');
+            trackEvent('navigation', 'mobile_menu_close', 'hamburger');
+        }
+    }
+}
 
 // ===== Language Functions =====
 function initializeLanguage() {
@@ -27,11 +46,18 @@ function toggleLanguage() {
     applyLanguage(currentLang);
     document.getElementById('lang-btn').textContent = currentLang === 'ar' ? 'EN' : 'AR';
 
-    // Recalculate ROI and refresh quiz results if visible to match active language
+    // Rerender all dynamic data based on active language (Phase 18 Data Layer architecture)
+    renderComparisonTable();
+    renderPlatformCards();
     calculateROI();
+
     if (document.getElementById('quiz-steps').classList.contains('hidden')) {
         calculateQuizScore();
+    } else {
+        updateQuizUI();
     }
+
+    trackEvent('language', 'toggle', currentLang);
 }
 
 function applyLanguage(lang) {
@@ -44,7 +70,7 @@ function applyLanguage(lang) {
         ? "'Cairo', sans-serif" 
         : "'Inter', sans-serif";
     
-    // Update all translated elements
+    // Update all static translated elements with data-i18n
     document.querySelectorAll('[data-i18n]').forEach(element => {
         const key = element.dataset.i18n;
         if (translations[lang] && translations[lang][key]) {
@@ -52,18 +78,15 @@ function applyLanguage(lang) {
         }
     });
 
-    // Update placeholders if any
-    const emailInput = document.querySelector('input[type="email"]');
-    if (emailInput) {
-        emailInput.placeholder = lang === 'ar' ? 'بريدك الإلكتروني' : 'Your Email';
+    // Update dynamic inputs placeholders
+    const searchInput = document.getElementById('live-search');
+    if (searchInput) {
+        searchInput.placeholder = translations[lang]['search_placeholder'] || searchInput.placeholder;
     }
 
-    // Update Quiz progress text
-    const progressText = document.getElementById('quiz-progress-text');
-    if (progressText && currentQuizStep <= totalQuizSteps) {
-        progressText.textContent = lang === 'ar'
-            ? `السؤال ${currentQuizStep} من ${totalQuizSteps}`
-            : `Question ${currentQuizStep} of ${totalQuizSteps}`;
+    const emailInput = document.querySelector('input[type="email"]');
+    if (emailInput) {
+        emailInput.placeholder = lang === 'ar' ? 'بريدك الإلكتروني...' : 'Your Email address...';
     }
 }
 
@@ -88,11 +111,168 @@ function toggleTheme() {
         document.body.classList.add('light-mode');
         document.getElementById('theme-btn').textContent = '🌙';
     }
+    trackEvent('theme', 'toggle', isDarkMode ? 'dark' : 'light');
+}
+
+// ===== Render Comparison 2.0 Table (Phase 4 & Phase 18 Centralization) =====
+function renderComparisonTable() {
+    const tbody = document.getElementById('comparison-table-body');
+    if (!tbody || !window.platformsData) return;
+
+    // Define table criteria row mappings
+    const criteria = [
+      { key: "price", label: "crit_price" },
+      { key: "freePlan", label: "crit_free_plan" },
+      { key: "easeOfUse", label: "crit_ease_of_use" },
+      { key: "integrationsCount", label: "crit_integrations" },
+      { key: "webhooks", label: "crit_webhooks" },
+      { key: "api", label: "crit_api" },
+      { key: "aiFeatures", label: "crit_ai_support" },
+      { key: "codeExecution", label: "crit_code_execution" },
+      { key: "selfHosting", label: "crit_self_hosting" },
+      { key: "flexibility", label: "crit_flexibility" },
+      { key: "scalability", label: "crit_scalability" },
+      { key: "forBeginnersRating", label: "crit_for_beginners" },
+      { key: "forDevelopersRating", label: "crit_for_developers" },
+      { key: "forEnterprises", label: "crit_for_enterprises" },
+      { key: "privacy", label: "crit_privacy" },
+      { key: "bestUse", label: "crit_best_use" }
+    ];
+
+    tbody.innerHTML = '';
+
+    criteria.forEach(crit => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/20 transition-colors";
+
+        // Translated Criterion label
+        const tdLabel = document.createElement('td');
+        tdLabel.className = "py-4 px-6 font-semibold border-b border-slate-800/50";
+        tdLabel.textContent = translations[currentLang][crit.label] || crit.key;
+
+        // Platform values
+        const tdMake = document.createElement('td');
+        tdMake.className = "py-4 px-6 text-slate-300 border-b border-slate-800/50";
+        tdMake.textContent = window.platformsData.make.specs[crit.key][currentLang];
+
+        const tdZapier = document.createElement('td');
+        tdZapier.className = "py-4 px-6 text-slate-300 border-b border-slate-800/50";
+        tdZapier.textContent = window.platformsData.zapier.specs[crit.key][currentLang];
+
+        const tdN8n = document.createElement('td');
+        tdN8n.className = "py-4 px-6 text-slate-300 border-b border-slate-800/50";
+        tdN8n.textContent = window.platformsData.n8n.specs[crit.key][currentLang];
+
+        tr.appendChild(tdLabel);
+        tr.appendChild(tdMake);
+        tr.appendChild(tdZapier);
+        tr.appendChild(tdN8n);
+        tbody.appendChild(tr);
+    });
+}
+
+// ===== Render Platform Cards 2.0 (Phase 5 Platform Cards & Phase 11 & Phase 18) =====
+function renderPlatformCards() {
+    const container = document.getElementById('platform-cards-container');
+    if (!container || !window.platformsData) return;
+
+    container.innerHTML = '';
+
+    Object.keys(window.platformsData).forEach(key => {
+        const platform = window.platformsData[key];
+
+        // Stars generation helper
+        const renderStars = (num) => '★'.repeat(num) + '☆'.repeat(10 - num);
+
+        const card = document.createElement('div');
+        // Custom styling colors based on platform key
+        let accentBorder = "border-slate-700/60";
+        let titleColor = "text-blue-400";
+        let btnBg = "bg-blue-600 hover:bg-blue-700 shadow-blue-600/20";
+        let ratingUsability = platform.scores.usability;
+        let ratingFlexibility = platform.scores.flexibility;
+
+        if (key === 'zapier') {
+            accentBorder = "border-purple-500/80 border-2";
+            titleColor = "text-purple-400";
+            btnBg = "bg-purple-600 hover:bg-purple-700 shadow-purple-600/20";
+        } else if (key === 'n8n') {
+            titleColor = "text-emerald-400";
+            btnBg = "bg-emerald-600 hover:bg-emerald-700 shadow-emerald-600/20";
+        }
+
+        card.className = `bg-slate-800/40 ${accentBorder} p-8 rounded-3xl flex flex-col justify-between hover:scale-[1.01] transition-all hover:shadow-xl hover:shadow-blue-500/5 relative`;
+
+        card.innerHTML = `
+            <div>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-2xl font-extrabold ${titleColor}">${platform.name}</h3>
+                    <span class="bg-blue-500/10 text-blue-400 text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">
+                        ${translations[currentLang]['badge_' + key] || ''}
+                    </span>
+                </div>
+                <p class="text-xs text-slate-400 mb-6 leading-relaxed min-h-[40px]">${platform.tagline[currentLang]}</p>
+
+                <div class="space-y-3 mb-6 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">${translations[currentLang]['card_best_for']}</span>
+                        <span class="font-bold text-slate-200">${platform.bestFor[currentLang]}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">${translations[currentLang]['card_usability_rating']}</span>
+                        <span class="text-amber-400 font-medium">${renderStars(ratingUsability)}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">${translations[currentLang]['card_flexibility_rating']}</span>
+                        <span class="text-blue-400 font-medium">${renderStars(ratingFlexibility)}</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">${translations[currentLang]['card_price_starts']}</span>
+                        <span class="font-bold text-slate-100">${platform.specs.price[currentLang]}</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800/80 pt-4 mb-6 text-xs space-y-2.5">
+                    <div>
+                        <span class="font-bold text-emerald-400 block mb-1">✓ ${translations[currentLang]['card_best_feature']}</span>
+                        <span class="text-slate-300 leading-relaxed">${platform.mainFeature[currentLang]}</span>
+                    </div>
+                    <div>
+                        <span class="font-bold text-red-400 block mb-1">✗ ${translations[currentLang]['card_worst_con']}</span>
+                        <span class="text-slate-400 leading-relaxed">${platform.mainCon[currentLang]}</span>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-800/80 pt-4 mb-8">
+                    <span class="text-xs font-semibold text-slate-400 block mb-2" data-i18n="card_why_choose">${translations[currentLang]['card_why_choose']}</span>
+                    <ul class="space-y-1.5 text-xs text-slate-300">
+                        ${platform.pros[currentLang].slice(0, 2).map(pro => `<li>✓ ${pro}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+
+            <div>
+                <a href="${platform.link}" target="_blank" rel="noopener noreferrer" onclick="trackAffiliateClick('${platform.id}')" class="w-full inline-block text-center ${btnBg} text-white font-bold py-3.5 rounded-xl transition-colors shadow-lg text-sm">
+                    ${translations[currentLang]['card_cta_btn']} ${platform.name}
+                </a>
+                <p class="text-slate-500 text-[10px] text-center mt-2" data-i18n="affiliate_disclosure_footer">
+                    * قد نحصل على عمولة عند التسجيل دون تكلفة عليك.
+                </p>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
 }
 
 // ===== Quiz Logic (Phase 2 & 3 Smart Recommendation) =====
 function selectOption(step, value) {
     quizAnswers[step] = value;
+
+    // Custom events (Phase 20)
+    if (step === 1) {
+        trackEvent('recommendation_started', 'quiz_start', 'q1_beginner');
+    }
 
     if (step < totalQuizSteps) {
         currentQuizStep = step + 1;
@@ -100,6 +280,7 @@ function selectOption(step, value) {
     } else {
         // Quiz complete - calculate and show results
         calculateQuizScore();
+        trackEvent('recommendation_completed', 'quiz_finish', 'all_steps_answered');
     }
 }
 
@@ -153,7 +334,7 @@ function updateQuizUI() {
 }
 
 function calculateQuizScore() {
-    // Platform Base profiles matching quiz variables
+    // Scoring engine (Phase 2 Scoring algorithm)
     let scores = { make: 0, zapier: 0, n8n: 0 };
 
     // Q1 (Experience)
@@ -203,7 +384,7 @@ function calculateQuizScore() {
     // Q3 (Budget)
     const budget = quizAnswers[3];
     if (budget === 'free') {
-        scores.n8n += 5; // self-hosted is free
+        scores.n8n += 5;
         scores.make += 2;
         scores.zapier += 0;
     } else if (budget === 'low') {
@@ -268,7 +449,7 @@ function calculateQuizScore() {
         scores.zapier += 1;
     }
 
-    // Determine absolute match percentages (max potential points is around 30)
+    // Determine absolute match percentages (max potential points is 32)
     const maxScore = 32;
     let matchPercentages = {
         make: Math.min(98, Math.round((scores.make / maxScore) * 100) + 40),
@@ -282,88 +463,19 @@ function calculateQuizScore() {
     let secondPlatform = sortedMatches[1];
     let thirdPlatform = sortedMatches[2];
 
-    // Details for each platform
-    const platformDetails = {
-        make: {
-            title: "Make.com",
-            link: "https://www.make.com",
-            pros: {
-                ar: [
-                    "✓ واجهة سحب وإفلات بصرية متقدمة وسهلة الفهم",
-                    "✓ تكلفة عمليات منخفضة جداً وقيمة ممتازة مقابل السعر",
-                    "✓ يدعم بناء سيناريوهات متفرعة ومتشعبة بدون تعقيد برمجى",
-                    "✓ دعم قوي للذكاء الاصطناعي وربط مختلف الخدمات السحابية"
-                ],
-                en: [
-                    "✓ Advanced and intuitive drag-and-drop visual workflow builder",
-                    "✓ Very low execution costs and extreme value-for-money",
-                    "✓ Easily supports building complex multi-branched scenarios",
-                    "✓ Solid AI integration capabilities with over 1,000 global apps"
-                ]
-            },
-            reason: {
-                ar: "مناسب جداً لاحتياجاتك حيث يوفر التوازن المثالي بين القوة البصرية للواجهة، والتكلفة الاقتصادية الممتازة للعمليات المتكررة، دون الحاجة لخبرة برمجية عميقة.",
-                en: "Excellent fit for your needs as it offers the perfect sweet spot between visual ease of building, massive multi-branch capability, and incredibly affordable execution pricing."
-            }
-        },
-        zapier: {
-            title: "Zapier",
-            link: "https://zapier.com",
-            pros: {
-                ar: [
-                    "✓ أسهل وأبسط أداة للمبتدئين لبدء الأتمتة في ثوانٍ",
-                    "✓ يدعم أكبر عدد من التطبيقات عالمياً (أكثر من 5,000 تطبيق)",
-                    "✓ لا يحتاج لأي خبرة تقنية أو فهم لهياكل البيانات والمعطيات",
-                    "✓ استقرار عالي جداً وموثوقية ممتازة لربط المهام البسيطة"
-                ],
-                en: [
-                    "✓ Easiest and simplest tool for absolute beginners to start in seconds",
-                    "✓ Supports the largest directory of apps globally (5,000+ services)",
-                    "✓ Zero coding or technical background required",
-                    "✓ High reliability and continuous uptime stability for simple zaps"
-                ]
-            },
-            reason: {
-                ar: "مناسب لك للغاية نظراً لتركيزك على السهولة الفائقة والربط السريع والمباشر بين تطبيقاتك اليومية المفضلة دون تعقيد أو حاجة للبرمجة.",
-                en: "A wonderful match because you prioritize sheer simplicity, quick setup, and need access to the absolute widest ecosystem of applications without coding hassle."
-            }
-        },
-        n8n: {
-            title: "n8n.io",
-            link: "https://n8n.io",
-            pros: {
-                ar: [
-                    "✓ إمكانية الاستضافة الذاتية (Self-hosted) مجاناً بالكامل",
-                    "✓ تحكم مطلق 100% في بياناتك وخصوصيتها وأمنها",
-                    "✓ مرونة برمجية كاملة وكتابة كود مخصص (JavaScript/Python)",
-                    "✓ تكلفة صفرية تقريباً عند تشغيل ملايين المهام على خادمك"
-                ],
-                en: [
-                    "✓ Completely free to self-host on your own private server",
-                    "✓ 100% privacy and complete control over client data security",
-                    "✓ Unmatched developer flexibility with custom code nodes",
-                    "✓ Near-zero scaling costs when running millions of operations"
-                ]
-            },
-            reason: {
-                ar: "الخيار الأفضل للمحترفين والمطورين الذين يبحثون عن التحكم الكامل بأكوادهم وبنية خوادمهم والخصوصية المطلقة للبيانات بأقل تكلفة تشغيلية ممكنة.",
-                en: "The ultimate choice for technical developers and teams looking for full private server deployment, deep logical control, custom coding capabilities, and near-zero scaling fees."
-            }
-        }
-    };
+    const activeDetails = window.platformsData[bestPlatform];
 
-    // Update Results UI Elements
+    // Update Results UI Elements (Phases 3 & 25 details)
     document.getElementById('quiz-steps').classList.add('hidden');
     document.getElementById('quiz-results').classList.remove('hidden');
     document.getElementById('quiz-footer-nav').classList.add('hidden');
 
-    const activeDetails = platformDetails[bestPlatform];
-    document.getElementById('best-platform-title').textContent = activeDetails.title;
+    document.getElementById('best-platform-title').textContent = activeDetails.name;
     document.getElementById('best-match-percent').textContent = `${matchPercentages[bestPlatform]}%`;
-    document.getElementById('best-platform-reason').textContent = activeDetails.reason[currentLang];
+    document.getElementById('best-platform-reason').textContent = activeDetails.tagline[currentLang];
     document.getElementById('best-platform-link').href = activeDetails.link;
 
-    // Update Pros List
+    // Load Pros dynamically
     const prosUl = document.getElementById('best-platform-pros');
     prosUl.innerHTML = '';
     activeDetails.pros[currentLang].forEach(proText => {
@@ -373,24 +485,34 @@ function calculateQuizScore() {
         prosUl.appendChild(li);
     });
 
-    // Update Alternatives
+    // Load Cons dynamically
+    const consUl = document.getElementById('best-platform-cons');
+    consUl.innerHTML = '';
+    activeDetails.cons[currentLang].forEach(conText => {
+        const li = document.createElement('li');
+        li.className = 'flex items-center gap-2 text-slate-400';
+        li.textContent = `✗ ${conText}`;
+        consUl.appendChild(li);
+    });
+
+    // Load Alternatives match percentages list
     const altContainer = document.getElementById('alt-platforms-list');
     altContainer.innerHTML = '';
 
     const altList = [secondPlatform, thirdPlatform];
     altList.forEach(platKey => {
-        const details = platformDetails[platKey];
+        const details = window.platformsData[platKey];
         const percent = matchPercentages[platKey];
 
         const item = document.createElement('div');
         item.className = 'border-b border-slate-800 pb-3 last:border-0';
         item.innerHTML = `
             <div class="flex justify-between items-center mb-1">
-                <span class="font-bold text-slate-200">${details.title}</span>
+                <span class="font-bold text-slate-200">${details.name}</span>
                 <span class="text-xs font-bold text-slate-400">${percent}%</span>
             </div>
             <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                <div class="bg-slate-500 h-1.5 rounded-full" style="width: ${percent}%"></div>
+                <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${percent}%"></div>
             </div>
         `;
         altContainer.appendChild(item);
@@ -404,31 +526,92 @@ function resetQuiz() {
     quizAnswers = {};
     currentQuizStep = 1;
     updateQuizUI();
+    trackEvent('recommendation_reset', 'quiz_reset', 'start_over');
 }
 
-// ===== ROI Calculator Functions =====
+// ===== ROI Calculator 2.0 Functions (Phases 6 & 7) =====
 function calculateROI() {
-    // Get input values
+    // Get inputs
     const employees = parseInt(document.getElementById('employees').value) || 10;
     const hoursPerWeek = parseInt(document.getElementById('hours').value) || 8;
     const hourlyRate = parseInt(document.getElementById('cost').value) || 25;
+    const workType = document.getElementById('work-type').value || 'customer_service';
     
-    // Update displayed values
+    // Update displayed range values
     document.getElementById('val-emp').textContent = employees;
     document.getElementById('val-hours').textContent = hoursPerWeek;
     document.getElementById('val-cost').textContent = hourlyRate;
     
-    // Calculations
-    const hoursPerMonth = hoursPerWeek * employees * 4.33; // Average weeks per month
-    const automationRate = 0.7; // 70% automation
+    // Mapping Work Types to dynamic automation suitability rates (Phase 6 ROI 2.0)
+    const workTypeAutomationRates = {
+        customer_service: 0.60,
+        data_entry: 0.85,
+        marketing: 0.75,
+        sales: 0.70,
+        admin: 0.50,
+        orders: 0.80,
+        email: 0.65
+    };
+
+    const automationRate = workTypeAutomationRates[workType] || 0.70;
+
+    // Complete calculations
+    const hoursPerMonth = hoursPerWeek * employees * 4.33;
     const savedHours = hoursPerMonth * automationRate;
     const monthlySaving = savedHours * hourlyRate;
     const annualSaving = monthlySaving * 12;
     
-    // Update display
+    // Update results display
     document.getElementById('monthly-saving').textContent = `$${Math.round(monthlySaving).toLocaleString()}`;
     document.getElementById('saved-hours').textContent = `${Math.round(savedHours).toLocaleString()} ${currentLang === 'ar' ? 'ساعة' : 'hours'}`;
     document.getElementById('annual-saving').textContent = `$${Math.round(annualSaving).toLocaleString()}`;
+
+    // Update dynamic sub-text with specific rate
+    const subText = document.getElementById('roi-res-sub-text');
+    if (subText) {
+        subText.textContent = currentLang === 'ar'
+            ? `بناءً على نسبة أتمتة مخصصة لعملك تبلغ ${Math.round(automationRate * 100)}%.`
+            : `Based on a customized automation rate of ${Math.round(automationRate * 100)}% for your department.`;
+    }
+
+    // ROI + Recommendation Output logic (Phase 7 Integration)
+    const recBox = document.getElementById('roi-platform-recommendation');
+    if (recBox) {
+        let recommendationKey = "roi_rec_make";
+        const monthlyWorkloadOperations = hoursPerMonth * 60; // rough estimation of task volume
+
+        if (monthlyWorkloadOperations > 15000) {
+            recommendationKey = "roi_rec_n8n";
+        } else if (employees < 3 && hoursPerWeek < 5) {
+            recommendationKey = "roi_rec_zapier";
+        } else {
+            recommendationKey = "roi_rec_make";
+        }
+
+        recBox.innerHTML = translations[currentLang][recommendationKey] || translations[currentLang]['roi_rec_make'];
+    }
+
+    trackEvent('roi_calculated', 'calculate', `emp_${employees}_hours_${hoursPerWeek}_cost_${hourlyRate}`);
+}
+
+// ===== Live Search Filtering Logic (Phase 17 Search) =====
+function handleSearch() {
+    const query = document.getElementById('live-search').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.scenario-card');
+
+    cards.forEach(card => {
+        const keywords = card.getAttribute('data-keywords') || '';
+        const title = card.querySelector('h3').textContent.toLowerCase();
+        const desc = card.querySelector('p').textContent.toLowerCase();
+
+        if (keywords.includes(query) || title.includes(query) || desc.includes(query) || query === '') {
+            card.style.display = 'block';
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    trackEvent('search', 'filter_scenarios', query);
 }
 
 // ===== FAQ Functions =====
@@ -445,7 +628,7 @@ function toggleFAQ(index) {
     }
 }
 
-// ===== Newsletter Functions =====
+// ===== Newsletter subscription with Lead Magnet Trigger (Phases 13 & 14) =====
 function handleNewsletter(event) {
     event.preventDefault();
     
@@ -459,17 +642,17 @@ function handleNewsletter(event) {
         return;
     }
     
-    // Store in localStorage (in production, send to server)
+    // simulated subscriber storage
     let subscribers = JSON.parse(localStorage.getItem('newsletter_subscribers') || '[]');
     if (!subscribers.includes(email)) {
         subscribers.push(email);
         localStorage.setItem('newsletter_subscribers', JSON.stringify(subscribers));
     }
     
-    // Show success message
-    alert(currentLang === 'ar' 
-        ? 'شكراً على الاشتراك! تحقق من بريدك الإلكتروني.' 
-        : 'Thank you for subscribing! Check your email.');
+    // Show Lead Magnet Success Confirmation (Phase 13 & 14)
+    alert(translations[currentLang]['newsletter_success'] || 'Subscribed successfully!');
+
+    trackEvent('newsletter_subscribed', 'lead_magnet_download', email);
     
     event.target.reset();
 }
@@ -479,12 +662,39 @@ function isValidEmail(email) {
     return emailRegex.test(email);
 }
 
+// ===== Centralized Affiliate Tracker (Phases 11 & 12 & 19) =====
+function trackAffiliateClick(platformId) {
+    trackEvent('affiliate_clicked', 'referral', platformId);
+}
+
+// ===== Analytics Logger (Phase 19 & Phase 20 Custom Events) =====
+function trackEvent(category, action, label) {
+    console.log(`[SaaSAutomate Analytics] Category: ${category} | Action: ${action} | Label: ${label}`);
+
+    // Store in browser database for custom audit log
+    let analyticsLog = JSON.parse(localStorage.getItem('saasautomate_analytics_events') || '[]');
+    analyticsLog.push({
+        category,
+        action,
+        label,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('saasautomate_analytics_events', JSON.stringify(analyticsLog));
+}
+
 // ===== Smooth Scroll for Navigation =====
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         const href = this.getAttribute('href');
         if (href !== '#' && document.querySelector(href)) {
             e.preventDefault();
+
+            // Close mobile menu if open
+            const menu = document.getElementById('mobile-menu');
+            if (menu && !menu.classList.contains('hidden')) {
+                menu.classList.add('hidden');
+            }
+
             document.querySelector(href).scrollIntoView({
                 behavior: 'smooth'
             });
@@ -492,7 +702,7 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// ===== Navbar Sticky Effect =====
+// ===== Navbar Sticky Background Effect =====
 window.addEventListener('scroll', () => {
     const navbar = document.getElementById('navbar');
     if (window.scrollY > 50) {
@@ -501,77 +711,6 @@ window.addEventListener('scroll', () => {
         navbar.style.background = 'rgba(15, 23, 42, 0.8)';
     }
 });
-
-// ===== Mobile Menu Toggle (if needed) =====
-function setupMobileMenu() {
-    // Add mobile menu functionality here if needed
-    const navLinks = document.getElementById('nav-links');
-    
-    // You can add a hamburger menu icon and toggle visibility
-    const hamburger = document.createElement('button');
-    hamburger.innerHTML = '☰';
-    hamburger.className = 'md:hidden text-slate-200 text-xl';
-    hamburger.onclick = function() {
-        navLinks.classList.toggle('hidden');
-    };
-}
-
-// ===== Analytics (Optional - Add your own tracking) =====
-function trackEvent(category, action, label) {
-    // Replace with your analytics service
-    // Example: Google Analytics, Mixpanel, etc.
-    console.log(`Event: ${category} - ${action} - ${label}`);
-}
-
-// ===== Performance Optimization =====
-// Lazy load images (if you add images later)
-if ('IntersectionObserver' in window) {
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.classList.remove('lazy');
-                observer.unobserve(img);
-            }
-        });
-    });
-    
-    document.querySelectorAll('img.lazy').forEach(img => imageObserver.observe(img));
-}
-
-// ===== Share Functions =====
-function shareOnTwitter() {
-    const url = window.location.href;
-    const text = currentLang === 'ar' 
-        ? 'تحقق من أفضل منصات الأتمتة - SaaSAutomate'
-        : 'Check out the best automation platforms - SaaSAutomate';
-    window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
-    trackEvent('share', 'twitter', 'homepage');
-}
-
-// ===== Contact Form Handler (if you add a contact form) =====
-function handleContactForm(event) {
-    event.preventDefault();
-    
-    const formData = {
-        name: event.target.querySelector('[name="name"]').value,
-        email: event.target.querySelector('[name="email"]').value,
-        message: event.target.querySelector('[name="message"]').value,
-        timestamp: new Date().toISOString()
-    };
-    
-    // Store locally (in production, send to server/email service)
-    let contacts = JSON.parse(localStorage.getItem('contact_submissions') || '[]');
-    contacts.push(formData);
-    localStorage.setItem('contact_submissions', JSON.stringify(contacts));
-    
-    alert(currentLang === 'ar' 
-        ? 'شكراً! سنتواصل معك قريباً.'
-        : 'Thank you! We\'ll contact you soon.');
-    
-    event.target.reset();
-}
 
 // ===== Export for Testing =====
 if (typeof module !== 'undefined' && module.exports) {
@@ -584,6 +723,10 @@ if (typeof module !== 'undefined' && module.exports) {
         isValidEmail,
         selectOption,
         prevStep,
-        resetQuiz
+        resetQuiz,
+        toggleMobileMenu,
+        handleSearch,
+        trackAffiliateClick,
+        trackEvent
     };
 }

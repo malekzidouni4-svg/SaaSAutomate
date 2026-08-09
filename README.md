@@ -1,146 +1,83 @@
-# SaaSAutomate 🚀
+# SaaSAutomate 🚀 - Platform Comparison & Smart Recommendation
 
-منصة محايدة وموثوقة لمقارنة أفضل أدوات أتمتة الأعمال (Make، Zapier، n8n).
+منصة ثنائية اللغة (العربية والإنجليزية) ومستقلة لمقارنة أفضل أدوات أتمتة الأعمال وسيناريوهات الربط السحابي (Make، Zapier، و n8n).
 
-## 📋 المزايا
+## 📋 المزايا المحدثة (إصدار لعام 2026)
 
-✅ **مقارنة شاملة** بين 3 منصات أتمتة رائدة
-✅ **حاسبة ROI** لحساب التوفير المالي
-✅ **دعم لغتين** - العربية والإنجليزية
-✅ **تصميم مستجيب** - يعمل على جميع الأجهزة
-✅ **واجهة حديثة** - باستخدام Tailwind CSS
-✅ **جاهز للنشر** - يعمل مباشرة على أي خادم
-
-## 🛠️ التقنيات المستخدمة
-
-- **HTML5** - الهيكل
-- **CSS3 + Tailwind CSS** - التصميم
-- **JavaScript Vanilla** - الوظائف
-- **Responsive Design** - التوافقية
-- **Dark/Light Mode** - أوضاع العرض
-
-## 📁 هيكل المشروع
-
-```
-SaaSAutomate/
-├── index.html           # الصفحة الرئيسية
-├── privacy.html         # سياسة الخصوصية
-├── terms.html           # ش��وط الاستخدام
-├── contact.html         # صفحة التواصل
-├── js/
-│   ├── translations.js  # ملف الترجمات
-│   └── script.js        # ملف الوظائف الرئيسي
-└── README.md            # هذا الملف
-```
-
-## 🚀 البدء السريع
-
-### الخيار 1: التشغيل المحلي
-```bash
-# فتح الملف مباشرة
-open index.html
-```
-
-### الخيار 2: خادم محلي
-```bash
-# استخدام Python
-python -m http.server 8000
-
-# أو استخدام Node.js
-npx http-server
-```
-
-### الخيار 3: النشر على الإنترنت
-
-#### Netlify
-1. ادفع الملفات إلى GitHub
-2. اذهب إلى netlify.com وسجل دخول
-3. اربط مستودع GitHub
-4. انشر تلقائياً
-
-#### Vercel
-1. ادفع الملفات إلى GitHub
-2. اذهب إلى vercel.com وسجل دخول
-3. اختر "Import" واختر مستودعك
-4. انقر "Deploy"
-
-#### GitHub Pages
-```bash
-git push origin main
-```
-
-## 💰 إضافة Google Ads
-
-### الخطوة 1: التسجيل في Google AdSense
-1. اذهب إلى [Google AdSense](https://adsense.google.com)
-2. سجل حسابك وأضف موقعك
-3. انتظر الموافقة (قد تستغرق ��دة أيام)
-
-### الخطوة 2: إضافة كود الإعلانات
-
-أضف هذا الكود داخل `<head>` في `index.html`:
-```html
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-YOUR_PUBLISHER_ID"
-     crossorigin="anonymous"></script>
-```
-
-### الخطوة 3: إضافة إعلانات في الموقع
-
-مثال على إعلان في الموقع:
-```html
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-YOUR_PUBLISHER_ID"
-     data-ad-slot="1234567890"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-```
-
-## 📊 التحليلات - Google Analytics
-
-أضف هذا الكود قبل `</head>`:
-```html
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'GA_MEASUREMENT_ID');
-</script>
-```
-
-## 🎨 التخصيص
-
-### تغيير المحتوى
-- عدّل `js/translations.js` لتغيير النصوص
-- غيّر أسعار المنصات في `index.html`
-- أضف سيناريوهات جديدة لحاسبة ROI
-
-## 📱 الميزات
-
-- ✅ حفظ التفضيلات محلياً
-- ✅ حسابات ديناميكية
-- ✅ أسئلة شائعة تفاعلية
-- ✅ نموذج اشتراك
-- ✅ نموذج اتصال
-- ✅ روابط وسائل التواصل
-
-## 🔒 الأمان
-
-- ✅ بيانات محفوظة محلياً
-- ✅ بدون قاعدة بيانات خارجية
-- ✅ معايير HTTPS عند النشر
-
-## 📈 نصائح للنجاح
-
-1. **SEO** - استخدم كلمات مفتاحية في المحتوى
-2. **الأداء** - ضغط الصور وتحسين التحميل
-3. **التسويق** - شارك على وسائل التواصل
+✅ **نظام التوصية الذكي (Smart Recommendation Quiz):** اختبار تفاعلي سريع مكون من 6 أسئلة يقوم بحساب درجة ومطابقة كل منصة مع احتياجات المستخدم بدقة وتوضيح الأسباب والعيوب والبدائل بشكل شفاف بالكامل.
+✅ **حاسبة ROI 2.0 الذكية:** تتيح اختيار قسم وتخصص العمل (Data Entry، Customer Service، إلخ) وتحديث نسبة الأتمتة المقدرة ديناميكياً لتوصية المنصة الأنسب تلقائياً بناءً على حجم الاستخدام والتوفير المالي.
+✅ **طبقة البيانات المركزية (Central Data Layer):** تصميم برمجي متقدم يجمع كافة مواصفات وتقييمات وأسعار المنصات في ملف واحد `js/platforms.js` يغذي حاسبة ROI وجدول المقارنة ونظام التوصية، مما يسهل عملية التحديث وإضافة منصات جديدة مستقبلاً.
+✅ **جدول مقارنة شامل وموسع 2.0:** يقارن أكثر من 16 معياراً متقدماً (Webhooks, API, Self-hosting, code block execution, privacy, etc).
+✅ **صفحات SEO منفصلة ومتخصصة:** إنشاء صفحات أدلة ومقارنات منفصلة وثنائية اللغة لتصدر نتائج محركات البحث لعام 2026.
+✅ **صندوق بحث فوري (Search Box):** ميزة البحث السريع وتصفية سيناريوهات الأتمتة المتاحة في ثوانٍ.
+✅ **تتبع وإحصاءات دقيقة (Analytics events):** تتبع أحداث وتفاعلات الزوار وتوليد تقارير أوتوماتيكية للفرص التسويقية.
+✅ **بنية متوافقة بالكامل مع Accessibility و SEO متقدم.**
 
 ---
 
-**آخر تحديث:** أغسطس 2024
+## 📁 هيكل المشروع المطور
+
+```
+SaaSAutomate/
+├── index.html           # الصفحة الرئيسية (الـ Hero، الاختبار الذكي، الحاسبة، السيناريوهات)
+├── make.html            # دليل مراجعة Make.com الشاملة
+├── zapier.html          # دليل مراجعة Zapier الشاملة
+├── n8n.html             # دليل مراجعة n8n.io الشاملة
+├── make-vs-zapier.html  # مقارنة وجهاً لوجه Make.com ضد Zapier
+├── make-vs-n8n.html     # مقارنة وجهاً لوجه Make.com ضد n8n
+├── zapier-vs-n8n.html   # مقارنة وجهاً لوجه Zapier ضد n8n
+├── privacy.html         # سياسة الخصوصية المحدثة
+├── terms.html           # شروط الاستخدام المحدثة
+├── contact.html         # صفحة التواصل
+├── sitemap.xml          # خريطة الموقع الكاملة لجميع الصفحات الـ 10
+├── js/
+│   ├── platforms.js     # طبقة البيانات المركزية (Data Layer)
+│   ├── translations.js  # ملف القواميس والترجمات الثنائية (Arabic / English)
+│   └── script.js        # ملف المنطق والوظائف وحساب نتائج الاختبار والحاسبة الذكية
+└── README.md            # هذا الملف
+```
+
+---
+
+## ⚙️ طريقة التطوير والتحديث
+
+### 1. إضافة أو تعديل مواصفات منصة:
+لتغيير سعر أو ميزة أو رابط Affiliate، قم فقط بالتعديل في ملف `js/platforms.js` وسينعكس التعديل تلقائياً في:
+- نظام التوصية والاختبار الذكي
+- جدول المقارنة الشامل 2.0
+- بطاقات الأسعار الأساسية في الصفحة الرئيسية
+
+مثال على هيكل المنصة داخل `platforms.js`:
+```javascript
+make: {
+  id: "make",
+  name: "Make.com",
+  scores: { usability: 8, flexibility: 9, ... },
+  specs: {
+    price: { ar: "يبدأ من 9$ / شهرياً", en: "Starts from $9 / month" },
+    ...
+  }
+}
+```
+
+### 2. إضافة ترجمات جديدة:
+قم بإضافة المفتاح (Key) المناسب داخل `js/translations.js` للغتين `ar` و `en` ثم قم باستخدامه في الـ HTML عن طريق خاصية `data-i18n="your_key"`.
+
+---
+
+## 🚀 التشغيل المحلي والاختبار
+
+لتشغيل الخادم المحلي والتصفح:
+```bash
+python -m http.server 8000
+```
+تصفح الموقع عبر الرابط: `http://localhost:8000`
+
+لتشغيل اختبارات التحقق من الواجهة وسيناريوهات اللعب التلقائي (Playwright):
+```bash
+python3 /home/jules/verification/verify_quiz.py
+```
+
+---
+
+**آخر تحديث:** أغسطس/سبتمبر 2026
