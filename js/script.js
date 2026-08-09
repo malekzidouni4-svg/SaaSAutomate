@@ -369,131 +369,79 @@ function updateQuizUI() {
 }
 
 function calculateQuizScore() {
-    // SCORING ENGINE (PROPER NON-ARTIFICIAL NORMALIZED SCORE OUT OF 100%)
-    // Let's accumulate weighted score matrices per choice.
-    // Each question has a max potential value of 5 points.
-    // Total potential maximum is 30 points.
-    let scores = { make: 0, zapier: 0, n8n: 0 };
+    // Definitive structured weights of options for Make, Zapier, and n8n
+    const quizWeights = {
+        1: { // Experience
+            beginner: { make: 2, zapier: 5, n8n: 0 },
+            intermediate: { make: 5, zapier: 3, n8n: 2 },
+            expert: { make: 3, zapier: 1, n8n: 5 }
+        },
+        2: { // Goal
+            daily: { make: 3, zapier: 5, n8n: 1 },
+            marketing: { make: 4, zapier: 5, n8n: 1 },
+            integrations: { make: 3, zapier: 5, n8n: 2 },
+            data: { make: 3, zapier: 1, n8n: 5 },
+            complex: { make: 5, zapier: 1, n8n: 4 },
+            ai: { make: 4, zapier: 2, n8n: 5 }
+        },
+        3: { // Budget
+            free: { make: 1, zapier: 0, n8n: 5 },
+            low: { make: 5, zapier: 1, n8n: 4 },
+            medium: { make: 5, zapier: 4, n8n: 2 },
+            high: { make: 4, zapier: 5, n8n: 2 }
+        },
+        4: { // Self-hosting
+            yes: { make: 0, zapier: 0, n8n: 5 },
+            no: { make: 5, zapier: 5, n8n: 1 },
+            maybe: { make: 5, zapier: 3, n8n: 3 }
+        },
+        5: { // Control level
+            simple: { make: 3, zapier: 5, n8n: 1 },
+            medium: { make: 5, zapier: 3, n8n: 3 },
+            full: { make: 3, zapier: 0, n8n: 5 }
+        },
+        6: { // Usage size
+            small: { make: 4, zapier: 5, n8n: 2 },
+            medium: { make: 5, zapier: 4, n8n: 3 },
+            large: { make: 4, zapier: 1, n8n: 5 }
+        }
+    };
 
-    // Q1 (Experience)
-    const exp = quizAnswers[1];
-    if (exp === 'beginner') {
-        scores.zapier += 5;
-        scores.make += 2;
-        scores.n8n += 0;
-    } else if (exp === 'intermediate') {
-        scores.make += 5;
-        scores.zapier += 3;
-        scores.n8n += 2;
-    } else if (exp === 'expert') {
-        scores.n8n += 5;
-        scores.make += 3;
-        scores.zapier += 1;
+    // Dynamically calculate the highest potential score (maxPossibleScore) for each platform separately
+    const maxPossibleScore = { make: 0, zapier: 0, n8n: 0 };
+    for (const step in quizWeights) {
+        const options = quizWeights[step];
+        let maxMake = 0;
+        let maxZapier = 0;
+        let maxN8n = 0;
+        for (const opt in options) {
+            const weights = options[opt];
+            if (weights.make > maxMake) maxMake = weights.make;
+            if (weights.zapier > maxZapier) maxZapier = weights.zapier;
+            if (weights.n8n > maxN8n) maxN8n = weights.n8n;
+        }
+        maxPossibleScore.make += maxMake;
+        maxPossibleScore.zapier += maxZapier;
+        maxPossibleScore.n8n += maxN8n;
     }
 
-    // Q2 (Goal)
-    const goal = quizAnswers[2];
-    if (goal === 'daily') {
-        scores.zapier += 5;
-        scores.make += 3;
-        scores.n8n += 1;
-    } else if (goal === 'marketing') {
-        scores.zapier += 5;
-        scores.make += 4;
-        scores.n8n += 1;
-    } else if (goal === 'integrations') {
-        scores.zapier += 5;
-        scores.make += 3;
-        scores.n8n += 2;
-    } else if (goal === 'data') {
-        scores.n8n += 5;
-        scores.make += 3;
-        scores.zapier += 1;
-    } else if (goal === 'complex') {
-        scores.make += 5;
-        scores.n8n += 4;
-        scores.zapier += 1;
-    } else if (goal === 'ai') {
-        scores.n8n += 5;
-        scores.make += 4;
-        scores.zapier += 2;
+    // Calculate raw accumulated scores based on active user selections
+    let rawScore = { make: 0, zapier: 0, n8n: 0 };
+    for (let step = 1; step <= totalQuizSteps; step++) {
+        const ans = quizAnswers[step];
+        if (ans && quizWeights[step] && quizWeights[step][ans]) {
+            const weights = quizWeights[step][ans];
+            rawScore.make += weights.make;
+            rawScore.zapier += weights.zapier;
+            rawScore.n8n += weights.n8n;
+        }
     }
 
-    // Q3 (Budget)
-    const budget = quizAnswers[3];
-    if (budget === 'free') {
-        scores.n8n += 5;
-        scores.make += 1;
-        scores.zapier += 0;
-    } else if (budget === 'low') {
-        scores.make += 5;
-        scores.n8n += 4;
-        scores.zapier += 1;
-    } else if (budget === 'medium') {
-        scores.make += 5;
-        scores.zapier += 4;
-        scores.n8n += 2;
-    } else if (budget === 'high') {
-        scores.zapier += 5;
-        scores.make += 4;
-        scores.n8n += 2;
-    }
-
-    // Q4 (Self-hosting)
-    const hosting = quizAnswers[4];
-    if (hosting === 'yes') {
-        scores.n8n += 5;
-        scores.make += 0;
-        scores.zapier += 0;
-    } else if (hosting === 'no') {
-        scores.zapier += 5;
-        scores.make += 5;
-        scores.n8n += 1;
-    } else if (hosting === 'maybe') {
-        scores.make += 5;
-        scores.zapier += 3;
-        scores.n8n += 3;
-    }
-
-    // Q5 (Control level)
-    const control = quizAnswers[5];
-    if (control === 'simple') {
-        scores.zapier += 5;
-        scores.make += 3;
-        scores.n8n += 1;
-    } else if (control === 'medium') {
-        scores.make += 5;
-        scores.zapier += 3;
-        scores.n8n += 3;
-    } else if (control === 'full') {
-        scores.n8n += 5;
-        scores.make += 3;
-        scores.zapier += 0;
-    }
-
-    // Q6 (Usage size)
-    const volume = quizAnswers[6];
-    if (volume === 'small') {
-        scores.zapier += 5;
-        scores.make += 4;
-        scores.n8n += 2;
-    } else if (volume === 'medium') {
-        scores.make += 5;
-        scores.zapier += 4;
-        scores.n8n += 3;
-    } else if (volume === 'large') {
-        scores.n8n += 5;
-        scores.make += 4;
-        scores.zapier += 1;
-    }
-
-    // Absolute Maximum theoretical score per platform is 30 points.
-    // Calculate normalized Compatibility Score mathematically (0 - 100%)
-    const maxPotential = 30;
+    // Compute normalized mathematical Compatibility Scores (0 to 100%)
     let matchPercentages = {
-        make: Math.round((scores.make / maxPotential) * 100),
-        zapier: Math.round((scores.zapier / maxPotential) * 100),
-        n8n: Math.round((scores.n8n / maxPotential) * 100)
+        make: Math.round((rawScore.make / (maxPossibleScore.make || 1)) * 100),
+        zapier: Math.round((rawScore.zapier / (maxPossibleScore.zapier || 1)) * 100),
+        n8n: Math.round((rawScore.n8n / (maxPossibleScore.n8n || 1)) * 100)
     };
 
     // Sort platforms by compatibility score
@@ -738,7 +686,7 @@ function calculateROI() {
     if (valEmp) valEmp.textContent = employees.toLocaleString();
     if (valHours) valHours.textContent = hoursPerWeek.toLocaleString();
     if (valCost) valCost.textContent = hourlyRate.toLocaleString();
-    
+
     // Mapping Work Types to dynamic automation suitability rates (Phase 6 ROI 2.0)
     const workTypeSelect = document.getElementById('work-type');
     const workType = workTypeSelect ? workTypeSelect.value : 'customer_service';
