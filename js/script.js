@@ -34,24 +34,54 @@ function toggleMobileMenu() {
     }
 }
 
+// ===== Contact Form Mock Submission (Phase 15) =====
+function handleContactForm(event) {
+    event.preventDefault();
+    const form = event.target;
+    const name = form.name.value;
+    const email = form.email.value;
+    const subject = form.subject.value;
+    const message = form.message.value;
+
+    let contactMessages = JSON.parse(localStorage.getItem('contact_messages') || '[]');
+    contactMessages.push({
+        name,
+        email,
+        subject,
+        message,
+        timestamp: new Date().toISOString()
+    });
+    localStorage.setItem('contact_messages', JSON.stringify(contactMessages));
+
+    const alertMsg = translations[currentLang]['contact_success_alert'] || 'Mock message sent successfully!';
+    alert(alertMsg);
+    form.reset();
+}
+
 // ===== Language Functions =====
 function initializeLanguage() {
     applyLanguage(currentLang);
-    document.getElementById('lang-btn').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+    const langBtn = document.getElementById('lang-btn');
+    if (langBtn) {
+        langBtn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
+    }
 }
 
 function toggleLanguage() {
     currentLang = currentLang === 'ar' ? 'en' : 'ar';
     localStorage.setItem('lang', currentLang);
     applyLanguage(currentLang);
-    document.getElementById('lang-btn').textContent = currentLang === 'ar' ? 'EN' : 'AR';
+    const langBtn = document.getElementById('lang-btn');
+    if (langBtn) {
+        langBtn.textContent = currentLang === 'ar' ? 'EN' : 'AR';
+    }
 
     // Rerender all dynamic data based on active language (Phase 18 Data Layer architecture)
     renderComparisonTable();
     renderPlatformCards();
     calculateROI();
 
-    if (document.getElementById('quiz-steps').classList.contains('hidden')) {
+    if (document.getElementById('quiz-steps') && document.getElementById('quiz-steps').classList.contains('hidden')) {
         calculateQuizScore();
     } else {
         updateQuizUI();
@@ -92,24 +122,26 @@ function applyLanguage(lang) {
 
 // ===== Theme Functions =====
 function initializeTheme() {
+    const themeBtn = document.getElementById('theme-btn');
     if (!isDarkMode) {
         document.body.classList.add('light-mode');
-        document.getElementById('theme-btn').textContent = '🌙';
+        if (themeBtn) themeBtn.textContent = '🌙';
     } else {
-        document.getElementById('theme-btn').textContent = '☀️';
+        if (themeBtn) themeBtn.textContent = '☀️';
     }
 }
 
 function toggleTheme() {
     isDarkMode = !isDarkMode;
     localStorage.setItem('theme', isDarkMode ? 'dark' : 'light');
+    const themeBtn = document.getElementById('theme-btn');
     
     if (isDarkMode) {
         document.body.classList.remove('light-mode');
-        document.getElementById('theme-btn').textContent = '☀️';
+        if (themeBtn) themeBtn.textContent = '☀️';
     } else {
         document.body.classList.add('light-mode');
-        document.getElementById('theme-btn').textContent = '🌙';
+        if (themeBtn) themeBtn.textContent = '🌙';
     }
     trackEvent('theme', 'toggle', isDarkMode ? 'dark' : 'light');
 }
@@ -153,15 +185,15 @@ function renderComparisonTable() {
         // Platform values
         const tdMake = document.createElement('td');
         tdMake.className = "py-4 px-6 text-slate-300 border-b border-slate-800/50";
-        tdMake.textContent = window.platformsData.make.specs[crit.key][currentLang];
+        tdMake.textContent = window.platformsData.make.specs[crit.key] ? window.platformsData.make.specs[crit.key][currentLang] : '';
 
         const tdZapier = document.createElement('td');
         tdZapier.className = "py-4 px-6 text-slate-300 border-b border-slate-800/50";
-        tdZapier.textContent = window.platformsData.zapier.specs[crit.key][currentLang];
+        tdZapier.textContent = window.platformsData.zapier.specs[crit.key] ? window.platformsData.zapier.specs[crit.key][currentLang] : '';
 
         const tdN8n = document.createElement('td');
         tdN8n.className = "py-4 px-6 text-slate-300 border-b border-slate-800/50";
-        tdN8n.textContent = window.platformsData.n8n.specs[crit.key][currentLang];
+        tdN8n.textContent = window.platformsData.n8n.specs[crit.key] ? window.platformsData.n8n.specs[crit.key][currentLang] : '';
 
         tr.appendChild(tdLabel);
         tr.appendChild(tdMake);
@@ -265,7 +297,7 @@ function renderPlatformCards() {
     });
 }
 
-// ===== Quiz Logic (Phase 2 & 3 Smart Recommendation) =====
+// ===== Quiz Logic (Phases 2 & 3 Smart Recommendation) =====
 function selectOption(step, value) {
     quizAnswers[step] = value;
 
@@ -303,10 +335,13 @@ function updateQuizUI() {
         }
     });
 
-    // Show/hide Quiz container & Results
-    document.getElementById('quiz-steps').classList.remove('hidden');
-    document.getElementById('quiz-results').classList.add('hidden');
-    document.getElementById('quiz-footer-nav').classList.remove('hidden');
+    const quizStepsContainer = document.getElementById('quiz-steps');
+    const quizResultsContainer = document.getElementById('quiz-results');
+    const quizFooterNavContainer = document.getElementById('quiz-footer-nav');
+
+    if (quizStepsContainer) quizStepsContainer.classList.remove('hidden');
+    if (quizResultsContainer) quizResultsContainer.classList.add('hidden');
+    if (quizFooterNavContainer) quizFooterNavContainer.classList.remove('hidden');
 
     // Update Progress Bar
     const progressPercent = Math.round(((currentQuizStep) / totalQuizSteps) * 100);
@@ -334,17 +369,20 @@ function updateQuizUI() {
 }
 
 function calculateQuizScore() {
-    // Scoring engine (Phase 2 Scoring algorithm)
+    // SCORING ENGINE (PROPER NON-ARTIFICIAL NORMALIZED SCORE OUT OF 100%)
+    // Let's accumulate weighted score matrices per choice.
+    // Each question has a max potential value of 5 points.
+    // Total potential maximum is 30 points.
     let scores = { make: 0, zapier: 0, n8n: 0 };
 
     // Q1 (Experience)
     const exp = quizAnswers[1];
     if (exp === 'beginner') {
-        scores.zapier += 4;
+        scores.zapier += 5;
         scores.make += 2;
         scores.n8n += 0;
     } else if (exp === 'intermediate') {
-        scores.make += 4;
+        scores.make += 5;
         scores.zapier += 3;
         scores.n8n += 2;
     } else if (exp === 'expert') {
@@ -356,11 +394,11 @@ function calculateQuizScore() {
     // Q2 (Goal)
     const goal = quizAnswers[2];
     if (goal === 'daily') {
-        scores.zapier += 4;
+        scores.zapier += 5;
         scores.make += 3;
         scores.n8n += 1;
     } else if (goal === 'marketing') {
-        scores.zapier += 4;
+        scores.zapier += 5;
         scores.make += 4;
         scores.n8n += 1;
     } else if (goal === 'integrations') {
@@ -373,11 +411,11 @@ function calculateQuizScore() {
         scores.zapier += 1;
     } else if (goal === 'complex') {
         scores.make += 5;
-        scores.n8n += 5;
+        scores.n8n += 4;
         scores.zapier += 1;
     } else if (goal === 'ai') {
+        scores.n8n += 5;
         scores.make += 4;
-        scores.n8n += 4;
         scores.zapier += 2;
     }
 
@@ -385,34 +423,34 @@ function calculateQuizScore() {
     const budget = quizAnswers[3];
     if (budget === 'free') {
         scores.n8n += 5;
-        scores.make += 2;
+        scores.make += 1;
         scores.zapier += 0;
     } else if (budget === 'low') {
-        scores.make += 4;
+        scores.make += 5;
         scores.n8n += 4;
         scores.zapier += 1;
     } else if (budget === 'medium') {
-        scores.make += 4;
-        scores.zapier += 3;
+        scores.make += 5;
+        scores.zapier += 4;
         scores.n8n += 2;
     } else if (budget === 'high') {
         scores.zapier += 5;
-        scores.make += 3;
-        scores.n8n += 1;
+        scores.make += 4;
+        scores.n8n += 2;
     }
 
     // Q4 (Self-hosting)
     const hosting = quizAnswers[4];
     if (hosting === 'yes') {
-        scores.n8n += 6;
+        scores.n8n += 5;
         scores.make += 0;
         scores.zapier += 0;
     } else if (hosting === 'no') {
-        scores.zapier += 4;
-        scores.make += 4;
+        scores.zapier += 5;
+        scores.make += 5;
         scores.n8n += 1;
     } else if (hosting === 'maybe') {
-        scores.make += 4;
+        scores.make += 5;
         scores.zapier += 3;
         scores.n8n += 3;
     }
@@ -428,7 +466,7 @@ function calculateQuizScore() {
         scores.zapier += 3;
         scores.n8n += 3;
     } else if (control === 'full') {
-        scores.n8n += 6;
+        scores.n8n += 5;
         scores.make += 3;
         scores.zapier += 0;
     }
@@ -436,28 +474,29 @@ function calculateQuizScore() {
     // Q6 (Usage size)
     const volume = quizAnswers[6];
     if (volume === 'small') {
-        scores.zapier += 4;
-        scores.make += 3;
+        scores.zapier += 5;
+        scores.make += 4;
         scores.n8n += 2;
     } else if (volume === 'medium') {
-        scores.make += 4;
-        scores.zapier += 3;
+        scores.make += 5;
+        scores.zapier += 4;
         scores.n8n += 3;
     } else if (volume === 'large') {
-        scores.n8n += 6;
+        scores.n8n += 5;
         scores.make += 4;
         scores.zapier += 1;
     }
 
-    // Determine absolute match percentages (max potential points is 32)
-    const maxScore = 32;
+    // Absolute Maximum theoretical score per platform is 30 points.
+    // Calculate normalized Compatibility Score mathematically (0 - 100%)
+    const maxPotential = 30;
     let matchPercentages = {
-        make: Math.min(98, Math.round((scores.make / maxScore) * 100) + 40),
-        zapier: Math.min(98, Math.round((scores.zapier / maxScore) * 100) + 40),
-        n8n: Math.min(98, Math.round((scores.n8n / maxScore) * 100) + 40)
+        make: Math.round((scores.make / maxPotential) * 100),
+        zapier: Math.round((scores.zapier / maxPotential) * 100),
+        n8n: Math.round((scores.n8n / maxPotential) * 100)
     };
 
-    // Sort platforms by percentage
+    // Sort platforms by compatibility score
     let sortedMatches = Object.keys(matchPercentages).sort((a, b) => matchPercentages[b] - matchPercentages[a]);
     let bestPlatform = sortedMatches[0];
     let secondPlatform = sortedMatches[1];
@@ -465,61 +504,203 @@ function calculateQuizScore() {
 
     const activeDetails = window.platformsData[bestPlatform];
 
-    // Update Results UI Elements (Phases 3 & 25 details)
-    document.getElementById('quiz-steps').classList.add('hidden');
-    document.getElementById('quiz-results').classList.remove('hidden');
-    document.getElementById('quiz-footer-nav').classList.add('hidden');
+    // Determine Match Label Badge
+    let scoreVal = matchPercentages[bestPlatform];
+    let matchLabel = translations[currentLang]['match_excellent'];
+    let badgeColorClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+    if (scoreVal >= 90) {
+        matchLabel = translations[currentLang]['match_excellent'];
+        badgeColorClass = "bg-emerald-500/10 text-emerald-400 border-emerald-500/30";
+    } else if (scoreVal >= 75) {
+        matchLabel = translations[currentLang]['match_strong'];
+        badgeColorClass = "bg-blue-500/10 text-blue-400 border-blue-500/30";
+    } else if (scoreVal >= 55) {
+        matchLabel = translations[currentLang]['match_good'];
+        badgeColorClass = "bg-yellow-500/10 text-yellow-500 border-yellow-500/30";
+    } else {
+        matchLabel = translations[currentLang]['match_moderate'];
+        badgeColorClass = "bg-orange-500/10 text-orange-400 border-orange-500/30";
+    }
 
-    document.getElementById('best-platform-title').textContent = activeDetails.name;
-    document.getElementById('best-match-percent').textContent = `${matchPercentages[bestPlatform]}%`;
-    document.getElementById('best-platform-reason').textContent = activeDetails.tagline[currentLang];
-    document.getElementById('best-platform-link').href = activeDetails.link;
+    // Generate Dynamic Recommendation Explanation based on actual inputs (Third Section requirements)
+    let winnerExplanation = "";
+    let keyFactors = [];
+    let customDrawback = "";
+
+    if (bestPlatform === 'zapier') {
+        winnerExplanation = currentLang === 'ar'
+            ? "اخترنا لك Zapier لأنك تبحث عن حل مرن وسهل الاستخدام للغاية لا يتطلب صيانة خوادم، وتفضل الدعم الأكبر للتطبيقات والربط السريع للمهام اليومية دون كتابة أي كود برمجي."
+            : "We recommended Zapier because you prioritize extreme ease of use, zero server maintenance overhead, and want direct linear task integrations with the absolute largest library of apps.";
+
+        // key factors
+        if (quizAnswers[1] === 'beginner') {
+            keyFactors.push(currentLang === 'ar' ? "تفادي تعقيدات البرمجة ومناسب تماماً للمبتدئين" : "Zero programming overhead fits beginners perfectly");
+        }
+        if (quizAnswers[4] === 'no') {
+            keyFactors.push(currentLang === 'ar' ? "تفضيل الخوادم السحابية المدارة بالكامل دون صيانة" : "Preference for managed cloud solutions without maintenance");
+        }
+        if (quizAnswers[2] === 'daily' || quizAnswers[2] === 'marketing') {
+            keyFactors.push(currentLang === 'ar' ? "الرغبة في إنهاء مهام التسويق والمهام اليومية بسرعة" : "Desire to finish marketing and daily flows with speed");
+        }
+        keyFactors.push(currentLang === 'ar' ? "توصيل أسرع بفضل مكتبة 5000+ تطبيق" : "Rapid assembly via a 5,000+ app directory");
+
+        customDrawback = currentLang === 'ar'
+            ? "المنصة تصبح باهظة الثمن ومكلفة للغاية عند تصاعد عدد العمليات أو رغبتك ببناء تفرعات شرطية معقدة."
+            : "The billing becomes highly expensive as execution volume scales, and custom visual logic branches are limited.";
+
+    } else if (bestPlatform === 'make') {
+        winnerExplanation = currentLang === 'ar'
+            ? "اخترنا لك Make.com لأنك تبحث عن التوازن المثالي بين السعر الاقتصادي والتفرع البصري المعقد، دون التورط في تعقيدات الاستضافة الذاتية للشركات الصغيرة والمتوسطة."
+            : "We recommended Make.com because you want the perfect balance of budget efficiency and advanced visual looping/conditional branching without dealing with self-hosted maintenance.";
+
+        if (quizAnswers[3] === 'low' || quizAnswers[3] === 'medium') {
+            keyFactors.push(currentLang === 'ar' ? "الحرص على أفضل قيمة اقتصادية مقابل السعر المنخفض" : "Securing the highest value-for-money at a low monthly price");
+        }
+        if (quizAnswers[2] === 'complex' || quizAnswers[2] === 'ai') {
+            keyFactors.push(currentLang === 'ar' ? "الحاجة لبناء سيناريوهات أتمتة وتكرارات مرئية معقدة" : "Need to construct visually complex scenarios and loops");
+        }
+        if (quizAnswers[5] === 'medium') {
+            keyFactors.push(currentLang === 'ar' ? "طلب مرونة متوسطة إلى متقدمة بصرية بالكامل" : "Requirement for moderate-to-high purely visual flexibility");
+        }
+        keyFactors.push(currentLang === 'ar' ? "محرر مرئي متشعب يسمح برسم المسارات التفاعلية" : "Interactive canvas allowing free mapping of data paths");
+
+        customDrawback = currentLang === 'ar'
+            ? "يملك منحنى تعليمي متوسط لفهم هياكل وتنسيقات الـ JSON المعقدة مقارنة بـ Zapier."
+            : "It possesses a slightly steeper learning curve to manipulate complex JSON structures than Zapier.";
+
+    } else { // n8n
+        winnerExplanation = currentLang === 'ar'
+            ? "اخترنا لك n8n لأنك تفضل الخصوصية المطلقة للبيانات، وترغب في استضافة النظام ذاتياً للتخلص من فواتير العمليات السحابية، مع استغلال مهاراتك البرمجية لتخصيص كلي."
+            : "We recommended n8n because you prefer absolute data privacy, self-hosting compatibility to eliminate third-party task charges, and have the coding skills for extreme customization.";
+
+        if (quizAnswers[4] === 'yes') {
+            keyFactors.push(currentLang === 'ar' ? "تفضيل الخصوصية المطلقة وتخزين البيانات على خادم محلي" : "Preference for total data privacy on your own server");
+        }
+        if (quizAnswers[1] === 'expert') {
+            keyFactors.push(currentLang === 'ar' ? "الاستفادة من مهاراتك في البرمجة وكتابة أكواد مخصصة" : "Leveraging your software engineering and coding expertise");
+        }
+        if (quizAnswers[3] === 'free' || quizAnswers[6] === 'large') {
+            keyFactors.push(currentLang === 'ar' ? "الرغبة في تشغيل عمليات وملايين المهام مجاناً وبدون قيود" : "Desire to run uncapped millions of executions with zero extra costs");
+        }
+        keyFactors.push(currentLang === 'ar' ? "دعم مدمج لعناصر LangChain لبناء عملاء ووكلاء الذكاء الاصطناعي" : "Native LangChain nodes supporting custom AI Agent models");
+
+        customDrawback = currentLang === 'ar'
+            ? "تتطلب صيانة تقنية للخادم لحل انقطاعات docker أو تضخم قواعد البيانات، وعدد تطبيقات الربط المباشر أقل."
+            : "Requires server administration to resolve Docker downtime or DB bloat, and features fewer native app connections.";
+    }
+
+    // Best Alternative logic
+    let alternativeTitle = "";
+    let alternativeExplanation = "";
+    if (bestPlatform === 'zapier') {
+        alternativeTitle = "Make.com";
+        alternativeExplanation = currentLang === 'ar'
+            ? "البديل الأفضل هو Make.com لأنه يوفر أسعاراً أرخص بكثير، لكنه يتطلب وقتاً أطول للتعلم ومواءمة تدفق البيانات."
+            : "The best alternative is Make.com because it is far cheaper, but it will demand a steeper learning curve for your team.";
+    } else if (bestPlatform === 'make') {
+        alternativeTitle = "n8n.io";
+        alternativeExplanation = currentLang === 'ar'
+            ? "البديل الأفضل هو n8n.io للتحكم بالخصوصية والاستضافة الذاتية المجانية، ولكنه سيتطلب خبرة برمجية لإدارة الخادم."
+            : "The best alternative is n8n.io for total private self-hosting, but it requires server management expertise.";
+    } else {
+        alternativeTitle = "Make.com";
+        alternativeExplanation = currentLang === 'ar'
+            ? "البديل الأفضل هو Make.com إذا كنت ترغب بالانتقال للسحابة وتوفير صيانة الخوادم، لكنك ستفقد ميزة الاستضافة المجانية."
+            : "The best alternative is Make.com to drop server maintenance overhead, but you will lose free unlimited task self-hosting.";
+    }
+
+    // Toggle Quiz container & Results
+    const quizSteps = document.getElementById('quiz-steps');
+    const quizResults = document.getElementById('quiz-results');
+    const quizFooterNav = document.getElementById('quiz-footer-nav');
+
+    if (quizSteps) quizSteps.classList.add('hidden');
+    if (quizResults) quizResults.classList.remove('hidden');
+    if (quizFooterNav) quizFooterNav.classList.add('hidden');
+
+    // Populate Results UI Elements cleanly
+    const bestTitleEl = document.getElementById('best-platform-title');
+    const bestPercentEl = document.getElementById('best-match-percent');
+    const bestReasonEl = document.getElementById('best-platform-reason');
+    const bestLinkEl = document.getElementById('best-platform-link');
+    const labelEl = document.getElementById('best-match-label');
+
+    if (bestTitleEl) bestTitleEl.textContent = activeDetails.name;
+    if (bestPercentEl) bestPercentEl.textContent = `${scoreVal}%`;
+    if (bestReasonEl) bestReasonEl.textContent = winnerExplanation;
+    if (bestLinkEl) bestLinkEl.href = activeDetails.link;
+    if (labelEl) {
+        labelEl.textContent = matchLabel;
+        labelEl.className = `inline-block text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider border ${badgeColorClass}`;
+    }
+
+    // Key factors UI list
+    const factorsUl = document.getElementById('best-platform-factors');
+    if (factorsUl) {
+        factorsUl.innerHTML = '';
+        keyFactors.forEach(factor => {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-2.5 text-sm text-slate-300';
+            li.innerHTML = `<span class="text-blue-400 font-bold">✓</span> <span>${factor}</span>`;
+            factorsUl.appendChild(li);
+        });
+    }
 
     // Load Pros dynamically
     const prosUl = document.getElementById('best-platform-pros');
-    prosUl.innerHTML = '';
-    activeDetails.pros[currentLang].forEach(proText => {
-        const li = document.createElement('li');
-        li.className = 'flex items-center gap-2';
-        li.textContent = proText;
-        prosUl.appendChild(li);
-    });
+    if (prosUl) {
+        prosUl.innerHTML = '';
+        activeDetails.pros[currentLang].forEach(proText => {
+            const li = document.createElement('li');
+            li.className = 'flex items-start gap-2.5 text-sm text-emerald-400 font-medium';
+            li.innerHTML = `<span>✓</span> <span class="text-slate-300 font-normal">${proText}</span>`;
+            prosUl.appendChild(li);
+        });
+    }
 
     // Load Cons dynamically
     const consUl = document.getElementById('best-platform-cons');
-    consUl.innerHTML = '';
-    activeDetails.cons[currentLang].forEach(conText => {
-        const li = document.createElement('li');
-        li.className = 'flex items-center gap-2 text-slate-400';
-        li.textContent = `✗ ${conText}`;
-        consUl.appendChild(li);
-    });
+    if (consUl) {
+        consUl.innerHTML = '';
+        const liDrawback = document.createElement('li');
+        liDrawback.className = 'flex items-start gap-2.5 text-sm text-red-400 font-medium';
+        liDrawback.innerHTML = `<span>✗</span> <span class="text-slate-300 font-normal">${customDrawback}</span>`;
+        consUl.appendChild(liDrawback);
+    }
+
+    // Load Alternative info
+    const altTitleEl = document.getElementById('alt-platform-title');
+    const altDescEl = document.getElementById('alt-platform-explanation');
+    if (altTitleEl) altTitleEl.textContent = alternativeTitle;
+    if (altDescEl) altDescEl.textContent = alternativeExplanation;
 
     // Load Alternatives match percentages list
     const altContainer = document.getElementById('alt-platforms-list');
-    altContainer.innerHTML = '';
+    if (altContainer) {
+        altContainer.innerHTML = '';
+        const altList = [secondPlatform, thirdPlatform];
+        altList.forEach(platKey => {
+            const details = window.platformsData[platKey];
+            const percent = matchPercentages[platKey];
 
-    const altList = [secondPlatform, thirdPlatform];
-    altList.forEach(platKey => {
-        const details = window.platformsData[platKey];
-        const percent = matchPercentages[platKey];
-
-        const item = document.createElement('div');
-        item.className = 'border-b border-slate-800 pb-3 last:border-0';
-        item.innerHTML = `
-            <div class="flex justify-between items-center mb-1">
-                <span class="font-bold text-slate-200">${details.name}</span>
-                <span class="text-xs font-bold text-slate-400">${percent}%</span>
-            </div>
-            <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${percent}%"></div>
-            </div>
-        `;
-        altContainer.appendChild(item);
-    });
+            const item = document.createElement('div');
+            item.className = 'border-b border-slate-800 pb-3 last:border-0';
+            item.innerHTML = `
+                <div class="flex justify-between items-center mb-1">
+                    <span class="font-bold text-slate-200 text-sm">${details.name}</span>
+                    <span class="text-xs font-bold text-slate-400">${percent}%</span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                    <div class="bg-blue-500 h-1.5 rounded-full" style="width: ${percent}%"></div>
+                </div>
+            `;
+            altContainer.appendChild(item);
+        });
+    }
 
     // Scroll to results cleanly
-    document.getElementById('quiz-section').scrollIntoView({ behavior: 'smooth' });
+    const quizSection = document.getElementById('quiz-section');
+    if (quizSection) quizSection.scrollIntoView({ behavior: 'smooth' });
 }
 
 function resetQuiz() {
@@ -531,18 +712,36 @@ function resetQuiz() {
 
 // ===== ROI Calculator 2.0 Functions (Phases 6 & 7) =====
 function calculateROI() {
-    // Get inputs
-    const employees = parseInt(document.getElementById('employees').value) || 10;
-    const hoursPerWeek = parseInt(document.getElementById('hours').value) || 8;
-    const hourlyRate = parseInt(document.getElementById('cost').value) || 25;
-    const workType = document.getElementById('work-type').value || 'customer_service';
+    // Graceful handling of edge case inputs to prevent NaN or breakages
+    const employeesInput = document.getElementById('employees');
+    const hoursInput = document.getElementById('hours');
+    const costInput = document.getElementById('cost');
+
+    let employees = employeesInput ? parseInt(employeesInput.value) : 10;
+    let hoursPerWeek = hoursInput ? parseInt(hoursInput.value) : 8;
+    let hourlyRate = costInput ? parseInt(costInput.value) : 25;
+
+    if (isNaN(employees) || employees < 0) employees = 0;
+    if (isNaN(hoursPerWeek) || hoursPerWeek < 0) hoursPerWeek = 0;
+    if (isNaN(hourlyRate) || hourlyRate < 0) hourlyRate = 0;
+
+    // Constrain extremely high input values to avoid layout damage
+    if (employees > 1000000) employees = 1000000;
+    if (hoursPerWeek > 168) hoursPerWeek = 168;
+    if (hourlyRate > 10000) hourlyRate = 10000;
     
-    // Update displayed range values
-    document.getElementById('val-emp').textContent = employees;
-    document.getElementById('val-hours').textContent = hoursPerWeek;
-    document.getElementById('val-cost').textContent = hourlyRate;
+    // Update displayed range values safely
+    const valEmp = document.getElementById('val-emp');
+    const valHours = document.getElementById('val-hours');
+    const valCost = document.getElementById('val-cost');
+
+    if (valEmp) valEmp.textContent = employees.toLocaleString();
+    if (valHours) valHours.textContent = hoursPerWeek.toLocaleString();
+    if (valCost) valCost.textContent = hourlyRate.toLocaleString();
     
     // Mapping Work Types to dynamic automation suitability rates (Phase 6 ROI 2.0)
+    const workTypeSelect = document.getElementById('work-type');
+    const workType = workTypeSelect ? workTypeSelect.value : 'customer_service';
     const workTypeAutomationRates = {
         customer_service: 0.60,
         data_entry: 0.85,
@@ -561,17 +760,21 @@ function calculateROI() {
     const monthlySaving = savedHours * hourlyRate;
     const annualSaving = monthlySaving * 12;
     
-    // Update results display
-    document.getElementById('monthly-saving').textContent = `$${Math.round(monthlySaving).toLocaleString()}`;
-    document.getElementById('saved-hours').textContent = `${Math.round(savedHours).toLocaleString()} ${currentLang === 'ar' ? 'ساعة' : 'hours'}`;
-    document.getElementById('annual-saving').textContent = `$${Math.round(annualSaving).toLocaleString()}`;
+    // Update results display safely
+    const monthlySavingEl = document.getElementById('monthly-saving');
+    const savedHoursEl = document.getElementById('saved-hours');
+    const annualSavingEl = document.getElementById('annual-saving');
+
+    if (monthlySavingEl) monthlySavingEl.textContent = `$${Math.round(monthlySaving).toLocaleString()}`;
+    if (savedHoursEl) savedHoursEl.textContent = `${Math.round(savedHours).toLocaleString()} ${currentLang === 'ar' ? 'ساعة' : 'hours'}`;
+    if (annualSavingEl) annualSavingEl.textContent = `$${Math.round(annualSaving).toLocaleString()}`;
 
     // Update dynamic sub-text with specific rate
     const subText = document.getElementById('roi-res-sub-text');
     if (subText) {
         subText.textContent = currentLang === 'ar'
-            ? `بناءً على نسبة أتمتة مخصصة لعملك تبلغ ${Math.round(automationRate * 100)}%.`
-            : `Based on a customized automation rate of ${Math.round(automationRate * 100)}% for your department.`;
+            ? `تقدير تقريبي بناءً على نسبة أتمتة تبلغ ${Math.round(automationRate * 100)}% ولا يُقَدّم كضمان مالي.`
+            : `Approximate estimation based on an automation rate of ${Math.round(automationRate * 100)}% (not a financial guarantee).`;
     }
 
     // ROI + Recommendation Output logic (Phase 7 Integration)
@@ -596,13 +799,17 @@ function calculateROI() {
 
 // ===== Live Search Filtering Logic (Phase 17 Search) =====
 function handleSearch() {
-    const query = document.getElementById('live-search').value.toLowerCase().trim();
+    const queryEl = document.getElementById('live-search');
+    const query = queryEl ? queryEl.value.toLowerCase().trim() : '';
     const cards = document.querySelectorAll('.scenario-card');
 
     cards.forEach(card => {
         const keywords = card.getAttribute('data-keywords') || '';
-        const title = card.querySelector('h3').textContent.toLowerCase();
-        const desc = card.querySelector('p').textContent.toLowerCase();
+        const titleEl = card.querySelector('h3');
+        const descEl = card.querySelector('p');
+
+        const title = titleEl ? titleEl.textContent.toLowerCase() : '';
+        const desc = descEl ? descEl.textContent.toLowerCase() : '';
 
         if (keywords.includes(query) || title.includes(query) || desc.includes(query) || query === '') {
             card.style.display = 'block';
@@ -619,12 +826,14 @@ function toggleFAQ(index) {
     const answer = document.getElementById(`faq-ans-${index}`);
     const icon = document.getElementById(`faq-icon-${index}`);
     
-    if (answer.classList.contains('hidden')) {
-        answer.classList.remove('hidden');
-        icon.textContent = '−';
-    } else {
-        answer.classList.add('hidden');
-        icon.textContent = '+';
+    if (answer) {
+        if (answer.classList.contains('hidden')) {
+            answer.classList.remove('hidden');
+            if (icon) icon.textContent = '−';
+        } else {
+            answer.classList.add('hidden');
+            if (icon) icon.textContent = '+';
+        }
     }
 }
 
@@ -632,7 +841,8 @@ function toggleFAQ(index) {
 function handleNewsletter(event) {
     event.preventDefault();
     
-    const email = event.target.querySelector('input[type="email"]').value;
+    const emailInput = event.target.querySelector('input[type="email"]');
+    const email = emailInput ? emailInput.value : '';
     
     // Validate email
     if (!email || !isValidEmail(email)) {
@@ -705,10 +915,12 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ===== Navbar Sticky Background Effect =====
 window.addEventListener('scroll', () => {
     const navbar = document.getElementById('navbar');
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(15, 23, 42, 0.95)';
-    } else {
-        navbar.style.background = 'rgba(15, 23, 42, 0.8)';
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+        } else {
+            navbar.style.background = 'rgba(15, 23, 42, 0.8)';
+        }
     }
 });
 
@@ -720,6 +932,7 @@ if (typeof module !== 'undefined' && module.exports) {
         calculateROI,
         toggleFAQ,
         handleNewsletter,
+        handleContactForm,
         isValidEmail,
         selectOption,
         prevStep,

@@ -24,25 +24,28 @@
         <div class="grid md:grid-cols-2 gap-12 mb-12">
             <!-- Contact Form -->
             <div class="bg-slate-800/40 border border-slate-700/60 p-8 rounded-2xl">
-                <h2 class="text-2xl font-bold mb-6">أرسل لنا رسالة</h2>
+                <h2 class="text-2xl font-bold mb-4">أرسل لنا رسالة</h2>
+                <p class="text-xxs text-slate-400 mb-6 bg-slate-900/50 p-3 rounded-xl border border-slate-700" id="contact-honesty-note">
+                    ملاحظة صادقة: هذا النموذج تجريبي مخصص للمحاكاة والعرض التقديمي (Frontend Mockup) ولا يرسل البيانات لأي خادم خارجي، بل يحفظها محلياً في المتصفح.
+                </p>
                 <form onsubmit="handleContactForm(event)" class="space-y-4">
                     <div>
-                        <label class="block text-sm font-semibold mb-2">الاسم</label>
-                        <input type="text" name="name" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="اسمك الكامل">
+                        <label for="contact-name" class="block text-sm font-semibold mb-2">الاسم</label>
+                        <input type="text" id="contact-name" name="name" required class="w-full bg-slate-700 border border-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg px-4 py-2 text-slate-100 focus:outline-none transition-all" placeholder="اسمك الكامل">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2">البريد الإلكتروني</label>
-                        <input type="email" name="email" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="بريدك@example.com">
+                        <label for="contact-email" class="block text-sm font-semibold mb-2">البريد الإلكتروني</label>
+                        <input type="email" id="contact-email" name="email" required class="w-full bg-slate-700 border border-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg px-4 py-2 text-slate-100 focus:outline-none transition-all" placeholder="بريدك@example.com">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2">الموضوع</label>
-                        <input type="text" name="subject" required class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="موضوع الرسالة">
+                        <label for="contact-subject" class="block text-sm font-semibold mb-2">الموضوع</label>
+                        <input type="text" id="contact-subject" name="subject" required class="w-full bg-slate-700 border border-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg px-4 py-2 text-slate-100 focus:outline-none transition-all" placeholder="موضوع الرسالة">
                     </div>
                     <div>
-                        <label class="block text-sm font-semibold mb-2">الرسالة</label>
-                        <textarea name="message" required rows="5" class="w-full bg-slate-700 border border-slate-600 rounded-lg px-4 py-2 text-slate-100 focus:outline-none focus:border-blue-500 transition-colors" placeholder="اكتب رسالتك هنا..."></textarea>
+                        <label for="contact-msg" class="block text-sm font-semibold mb-2">الرسالة</label>
+                        <textarea id="contact-msg" name="message" required rows="5" class="w-full bg-slate-700 border border-slate-600 focus:ring-2 focus:ring-blue-500 rounded-lg px-4 py-2 text-slate-100 focus:outline-none transition-all" placeholder="اكتب رسالتك هنا..."></textarea>
                     </div>
-                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors">
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors">
                         إرسال الرسالة
                     </button>
                 </form>

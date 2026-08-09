@@ -219,6 +219,7 @@
     <div class="max-w-4xl mx-auto px-4 mb-16 fade-in-up">
         <div class="bg-slate-800/50 border border-slate-700/80 p-5 rounded-2xl flex items-center gap-4 shadow-xl">
             <span class="text-2xl">🔎</span>
+            <label for="live-search" class="sr-only">البحث الفوري عن أدوات وسيناريوهات الأتمتة</label>
             <input type="text" id="live-search" oninput="handleSearch()" class="flex-1 bg-transparent border-0 text-slate-100 text-base placeholder-slate-500 focus:outline-none focus:ring-0" placeholder="ابحث عن أداة، ميزة أو سيناريو أتمتة (مثال: Sheets, AI, CRM)..." data-i18n="[placeholder]search_placeholder">
         </div>
     </div>
@@ -379,59 +380,83 @@
                 </div>
 
                 <!-- Results Output Block (Phase 3 Details & Phase 11 & Phase 12 & Phase 25) -->
-                <div id="quiz-results" class="hidden text-center md:text-start">
-                    <h3 class="text-2xl font-bold mb-6 text-slate-100 text-center" data-i18n="quiz_res_header">النتيجة والتوصية المناسبة لك</h3>
+                <div id="quiz-results" class="hidden text-start">
+                    <h3 class="text-2xl font-bold mb-6 text-slate-100 text-center" data-i18n="quiz_res_header">التقرير التحليلي لنتائج مطابقة المنصة الأنسب لعملك</h3>
 
                     <div class="grid md:grid-cols-3 gap-8 items-stretch mb-8">
-                        <!-- Best Fit Platform Card -->
-                        <div class="md:col-span-2 bg-slate-900/80 border-2 border-blue-500/80 p-8 rounded-2xl shadow-xl flex flex-col justify-between">
+                        <!-- Best Fit Platform Card (Redesigned as an independent audit report, not an ad) -->
+                        <div class="md:col-span-2 bg-slate-900/90 border-2 border-slate-800 p-8 rounded-3xl shadow-2xl flex flex-col justify-between">
                             <div>
-                                <div class="flex justify-between items-center mb-4">
-                                    <span class="bg-blue-500 text-white text-xs px-3 py-1 rounded-full font-bold uppercase tracking-wider animate-pulse" data-i18n="quiz_best_badge">الخيار الموصى به</span>
-                                    <span id="best-match-percent" class="text-blue-400 font-extrabold text-2xl">95%</span>
+                                <div class="flex flex-wrap justify-between items-center gap-4 mb-6 border-b border-slate-850 pb-4">
+                                    <div class="flex items-center gap-3">
+                                        <div id="best-match-label" class="inline-block text-xs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider border"></div>
+                                        <span class="bg-slate-800 text-slate-300 text-xxs px-2.5 py-1 rounded-full font-bold uppercase tracking-wider" data-i18n="quiz_best_badge">المنصة الأكثر توافقاً</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-slate-400 text-xs">درجة التوافق:</span>
+                                        <span id="best-match-percent" class="text-blue-400 font-extrabold text-3xl">--%</span>
+                                    </div>
                                 </div>
-                                <h4 id="best-platform-title" class="text-3xl font-extrabold mb-4 text-slate-100">Make.com</h4>
-                                <p id="best-platform-reason" class="text-slate-300 text-sm leading-relaxed mb-6">مناسب جداً لاحتياجاتك.</p>
+                                <h4 id="best-platform-title" class="text-4xl font-extrabold mb-4 text-slate-150">Make.com</h4>
 
-                                <div class="border-t border-slate-800 pt-4 mb-6">
-                                    <h5 class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3" data-i18n="quiz_why_lbl">لماذا تختاره؟</h5>
-                                    <ul id="best-platform-pros" class="space-y-2 text-sm text-slate-300">
-                                        <!-- Dynamic Pros -->
+                                <div class="mb-6 p-5 bg-slate-950/40 rounded-2xl border border-slate-800/80">
+                                    <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" data-i18n="quiz_why_lbl">لماذا تم اختيار هذه المنصة لك؟ (سبب التوصية الديناميكي)</h5>
+                                    <p id="best-platform-reason" class="text-slate-300 text-sm leading-relaxed font-normal">--</p>
+                                </div>
+
+                                <div class="mb-6">
+                                    <h5 class="text-xs font-bold text-blue-400 uppercase tracking-wider mb-3" data-i18n="key_factors_title">أهم العوامل المؤثرة التي حددت هذه النتيجة بناءً على إجاباتك:</h5>
+                                    <ul id="best-platform-factors" class="space-y-2">
+                                        <!-- Dynamic key factors -->
                                     </ul>
                                 </div>
 
-                                <div class="border-t border-slate-800 pt-4 mb-6">
-                                    <h5 class="text-xs font-semibold text-red-400 uppercase tracking-wider mb-3" data-i18n="quiz_not_why_lbl">قد لا يكون مناسباً إذا:</h5>
-                                    <ul id="best-platform-cons" class="space-y-2 text-sm text-slate-400">
-                                        <!-- Dynamic Cons -->
-                                    </ul>
+                                <div class="grid sm:grid-cols-2 gap-6 border-t border-slate-800/80 pt-6 mb-6">
+                                    <div>
+                                        <h5 class="text-xs font-bold text-emerald-400 uppercase tracking-wider mb-3" data-i18n="card_why_choose">لماذا تختاره لعملك؟</h5>
+                                        <ul id="best-platform-pros" class="space-y-2 text-sm text-slate-300">
+                                            <!-- Dynamic Pros -->
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h5 class="text-xs font-bold text-red-400 uppercase tracking-wider mb-3" data-i18n="quiz_drawback_lbl">تحديات ونقاط ضعف المنصة بالنسبة لملف عملك:</h5>
+                                        <ul id="best-platform-cons" class="space-y-2 text-sm text-slate-400">
+                                            <!-- Dynamic Cons -->
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Affiliate CTAs (Phase 11 & Phase 12 Disclosure) -->
-                            <div>
-                                <a id="best-platform-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full inline-block bg-blue-600 hover:bg-blue-700 text-white text-center py-4 rounded-xl font-bold transition-all shadow-lg shadow-blue-600/20 text-base" data-i18n="quiz_start_btn">
+                            <div class="border-t border-slate-800/80 pt-6">
+                                <a id="best-platform-link" href="#" target="_blank" rel="noopener noreferrer" class="w-full inline-block bg-blue-600 hover:bg-blue-700 text-white text-center py-4 rounded-xl font-bold transition-all shadow-lg text-sm" data-i18n="quiz_start_btn">
                                     ابدأ مع هذه المنصة الآن ←
                                 </a>
-                                <p class="text-slate-500 text-xxs mt-2 text-center" data-i18n="affiliate_disclosure_footer">
-                                    إفصاح: قد نحصل على عمولة تسويقية إذا سجلت من خلال روابطنا دون تكلفة إضافية عليك.
+                                <p class="text-slate-500 text-[11px] mt-2 text-center" data-i18n="affiliate_disclosure_footer">
+                                    إفصاح الشفافية: قد يحتوي هذا الموقع على روابط إحالة تسويقية رسمية مسؤولة. في حال قمت بالتسجيل، قد نحصل على عمولة بسيطة لمساعدتنا على استمرار التحليل المستقل دون تكلفة إضافية عليك.
                                 </p>
                             </div>
                         </div>
 
                         <!-- Alternatives & Scores (Phase 25 Transparent scoring) -->
-                        <div class="bg-slate-900/50 border border-slate-700/60 p-6 rounded-2xl flex flex-col justify-between">
+                        <div class="bg-slate-900/50 border border-slate-700/60 p-8 rounded-3xl flex flex-col justify-between">
                             <div>
-                                <h4 class="font-bold text-slate-300 text-sm mb-4" data-i18n="quiz_alt_scores">درجات تطابق البدائل</h4>
-                                <div class="space-y-4" id="alt-platforms-list">
+                                <h4 class="font-bold text-slate-300 text-sm mb-4" data-i18n="quiz_alt_scores">درجات تطابق البدائل والمنصات الأخرى</h4>
+                                <div class="space-y-5 mb-8" id="alt-platforms-list">
                                     <!-- Alternative items loaded dynamically -->
+                                </div>
+
+                                <div class="border-t border-slate-800/80 pt-6">
+                                    <h5 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2" data-i18n="quiz_alt_title">البديل الأفضل ولماذا هو أقل توافقاً معك:</h5>
+                                    <h6 id="alt-platform-title" class="font-bold text-slate-200 text-sm mb-1.5">--</h6>
+                                    <p id="alt-platform-explanation" class="text-xs text-slate-400 leading-relaxed">--</p>
                                 </div>
                             </div>
 
-                            <div class="mt-6">
-                                <p class="text-slate-500 text-[10px] leading-snug mb-4" data-i18n="quiz_suitability_explainer">نظام تقييم شفاف ومحايد.</p>
-                                <button onclick="resetQuiz()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 py-2.5 rounded-xl text-sm font-semibold transition-colors" data-i18n="quiz_reset_btn">
-                                    إعادة الاختبار
+                            <div class="mt-8">
+                                <p class="text-slate-500 text-[11px] leading-snug mb-5" data-i18n="quiz_suitability_explainer">نظام تقييم شفاف ومحايد.</p>
+                                <button onclick="resetQuiz()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 py-3 rounded-xl text-sm font-semibold transition-colors" data-i18n="quiz_reset_btn">
+                                    إعادة الاختبار والتحليل
                                 </button>
                             </div>
                         </div>
@@ -496,16 +521,16 @@
     <section id="roi" class="py-20 border-t border-slate-800/60 bg-slate-900/50">
         <div class="max-w-5xl mx-auto px-4">
             <div class="text-center mb-16">
-                <h2 class="text-3xl font-bold mb-4" data-i18n="roi_title">حاسبة العائد على الاستثمار (ROI 2.0)</h2>
-                <p class="text-slate-400" data-i18n="roi_desc">حدد حجم ونوع العمل اليدوي لاكتشاف حجم التوفير المالي وننصحك بالأداة الأنسب لسيناريوهاتك.</p>
+                <h2 class="text-3xl font-bold mb-4" data-i18n="roi_title">حاسبة العائد على الاستثمار الذكية (ROI 2.0) 📊</h2>
+                <p class="text-slate-400" data-i18n="roi_desc">تقدير تقريبي للأرباح والتوفير المالي بناءً على نوع العمل ونسب الأتمتة المتوقعة دون تقديم أي ضمانات مالية مطلقة.</p>
             </div>
             
             <div class="bg-slate-800/40 border border-slate-700/60 p-8 md:p-12 rounded-3xl grid md:grid-cols-2 gap-12 items-center">
                 <div class="bg-slate-900/80 border border-slate-700/80 p-8 rounded-2xl text-center md:text-start flex flex-col justify-between min-h-[350px]">
                     <div>
-                        <p class="text-xs uppercase tracking-wider text-slate-400 mb-2" data-i18n="roi_res_title">التوفير الشهري المتوقع</p>
+                        <p class="text-xs uppercase tracking-wider text-slate-400 mb-2" data-i18n="roi_res_title">التوفير الشهري المقدر (Estimated Monthly Savings)</p>
                         <div class="text-4xl md:text-5xl font-extrabold text-blue-400 mb-4" id="monthly-saving">$5,600</div>
-                        <p class="text-xs text-slate-400 mb-6" id="roi-res-sub-text" data-i18n="roi_res_sub">بناءً على نسبة أتمتة مخصصة لسيناريو عملك.</p>
+                        <p class="text-xs text-slate-400 mb-6" id="roi-res-sub-text" data-i18n="roi_res_sub">تقدير تقريبي بناءً على نسبة أتمتة افتراضية حسب تخصص شركتك.</p>
 
                         <div class="grid grid-cols-2 gap-4 border-t border-slate-800 pt-6">
                             <div>
@@ -513,7 +538,7 @@
                                 <span class="text-xl font-bold text-slate-200" id="saved-hours">224 ساعة</span>
                             </div>
                             <div>
-                                <span class="block text-xs text-slate-400 mb-1" data-i18n="roi_annual_lbl">التوفير السنوي</span>
+                                <span class="block text-xs text-slate-400 mb-1" data-i18n="roi_annual_lbl">التوفير السنوي المقدر</span>
                                 <span class="text-xl font-bold text-slate-200" id="annual-saving">$67,200</span>
                             </div>
                         </div>
@@ -521,46 +546,46 @@
 
                     <!-- ROI + Platform Recommendation Alert (Phase 7) -->
                     <div class="mt-6 p-4 rounded-xl bg-blue-950/80 border border-blue-800/60 text-xs text-slate-200 text-start leading-relaxed shadow-lg">
-                        <span class="font-bold text-blue-400 block mb-1" data-i18n="roi_rec_title">💡 توصية الحاسبة الذكية:</span>
-                        <span id="roi-platform-recommendation">بناءً على المعطيات، فإن Make.com هي الخيار الاقتصادي والمنصي الموصى به لك.</span>
+                        <span class="font-bold text-blue-400 block mb-1" data-i18n="roi_rec_title">💡 توصية الحاسبة الذكية المستقلة:</span>
+                        <span id="roi-platform-recommendation">بناءً على المعطيات وحجم العمل، ننصح بمنصة Make.com كخيار اقتصادي ممتاز لعمليات متشعبة بصرياً.</span>
                     </div>
                 </div>
 
                 <div class="space-y-6">
                     <!-- Work Type Selector (Phase 6 ROI 2.0) -->
                     <div>
-                        <label for="work-type" class="block text-sm font-semibold mb-2 text-slate-300" data-i18n="roi_work_type">نوع العمل والمجال الأساسي:</label>
+                        <label for="work-type" class="block text-sm font-semibold mb-2 text-slate-300" data-i18n="roi_work_type">قسم ونوع العمل الأساسي:</label>
                         <select id="work-type" onchange="calculateROI()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 text-sm focus:outline-none focus:border-blue-500 transition-colors">
-                            <option value="customer_service" data-i18n="wt_customer_service" selected>خدمة العملاء والدعم الفني (أتمتة %60)</option>
-                            <option value="data_entry" data-i18n="wt_data_entry">إدخال البيانات والمحاسبة (أتمتة %85)</option>
-                            <option value="marketing" data-i18n="wt_marketing">التسويق وجلب العملاء Leads (أتمتة %75)</option>
-                            <option value="sales" data-i18n="wt_sales">المبيعات وتتبع الفواتير (أتمتة %70)</option>
-                            <option value="admin" data-i18n="wt_admin">الإدارة والجدولة الداخلية (أتمتة %50)</option>
-                            <option value="orders" data-i18n="wt_orders">معالجة الطلبات والمتاجر الإلكترونية (أتمتة %80)</option>
-                            <option value="email" data-i18n="wt_email">إدارة البريد الإلكتروني والرسائل (أتمتة %65)</option>
+                            <option value="customer_service" data-i18n="wt_customer_service" selected>خدمة العملاء والدعم الفني (أتمتة %60 تقريباً)</option>
+                            <option value="data_entry" data-i18n="wt_data_entry">إدخال البيانات والمحاسبة (أتمتة %85 تقريباً)</option>
+                            <option value="marketing" data-i18n="wt_marketing">التسويق وجلب العملاء Leads (أتمتة %75 تقريباً)</option>
+                            <option value="sales" data-i18n="wt_sales">المبيعات وتتبع الفواتير (أتمتة %70 تقريباً)</option>
+                            <option value="admin" data-i18n="wt_admin">الإدارة والجدولة الداخلية (أتمتة %50 تقريباً)</option>
+                            <option value="orders" data-i18n="wt_orders">معالجة الطلبات والمتاجر الإلكترونية (أتمتة %80 تقريباً)</option>
+                            <option value="email" data-i18n="wt_email">إدارة البريد الإلكتروني والرسائل (أتمتة %65 تقريباً)</option>
                         </select>
                     </div>
 
                     <div>
                         <div class="flex justify-between text-sm font-semibold mb-2">
-                            <span data-i18n="roi_emp_count">عدد الموظفين:</span>
+                            <label for="employees" data-i18n="roi_emp_count">عدد الموظفين المتأثرين بالعمل اليدوي:</label>
                             <span id="val-emp" class="text-blue-400">10</span>
                         </div>
-                        <input type="range" id="employees" min="1" max="50" value="10" class="w-full accent-blue-500 cursor-pointer" oninput="calculateROI()">
+                        <input type="range" id="employees" min="1" max="50" value="10" class="w-full accent-blue-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg" oninput="calculateROI()" aria-label="Employees Count">
                     </div>
                     <div>
                         <div class="flex justify-between text-sm font-semibold mb-2">
-                            <span data-i18n="roi_hours_week">ساعات العمل اليدوي أسبوعياً:</span>
+                            <label for="hours" data-i18n="roi_hours_week">ساعات العمل اليدوي الأسبوعي لكل موظف:</label>
                             <span id="val-hours" class="text-blue-400">8</span>
                         </div>
-                        <input type="range" id="hours" min="1" max="40" value="8" class="w-full accent-blue-500 cursor-pointer" oninput="calculateROI()">
+                        <input type="range" id="hours" min="1" max="40" value="8" class="w-full accent-blue-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg" oninput="calculateROI()" aria-label="Weekly Manual Hours">
                     </div>
                     <div>
                         <div class="flex justify-between text-sm font-semibold mb-2">
-                            <span data-i18n="roi_hourly_cost">تكلفة الساعة ($):</span>
+                            <label for="cost" data-i18n="roi_hourly_cost">التكلفة التقريبية لساعة الموظف ($):</label>
                             <span id="val-cost" class="text-blue-400">25</span>
                         </div>
-                        <input type="range" id="cost" min="10" max="100" value="25" class="w-full accent-blue-500 cursor-pointer" oninput="calculateROI()">
+                        <input type="range" id="cost" min="10" max="100" value="25" class="w-full accent-blue-500 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg" oninput="calculateROI()" aria-label="Employee Hourly Rate">
                     </div>
                 </div>
             </div>
@@ -757,7 +782,7 @@
     </section>
 
     <!-- Newsletter with Lead Magnet Integration (Phases 13 & 14) -->
-    <section class="py-16 border-t border-slate-800/60 bg-gradient-to-r from-blue-600/10 to-purple-600/10">
+    <section class="py-16 border-t border-slate-800/60 bg-gradient-to-r from-blue-600/10 to-purple-600/10" aria-label="Newsletter Subscription">
         <div class="max-w-4xl mx-auto px-4 text-center">
             <h2 class="text-3xl font-bold mb-4" data-i18n="newsletter_title">ابقَ على اطلاع دائم بجديد الأتمتة</h2>
             <p class="text-slate-400 mb-6" data-i18n="newsletter_desc">اشترك معنا للحصول على نصائح وتطويرات حصرية وحاسمة في عالم الذكاء الاصطناعي والأتمتة.</p>
@@ -768,8 +793,9 @@
             </div>
 
             <form onsubmit="handleNewsletter(event)" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                <input type="email" placeholder="بريدك الإلكتروني" class="flex-1 bg-slate-800 border border-slate-700 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 transition-colors" required>
-                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-colors whitespace-nowrap" data-i18n="newsletter_btn">اشترك واحصل على الدليل مجاناً 🎁</button>
+                <label for="newsletter-email" class="sr-only">Email address</label>
+                <input type="email" id="newsletter-email" placeholder="بريدك الإلكتروني" class="flex-1 bg-slate-800 border border-slate-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 rounded-xl px-4 py-3 text-slate-200 placeholder-slate-500 focus:outline-none transition-all" required>
+                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all whitespace-nowrap focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-slate-900" data-i18n="newsletter_btn">اشترك واحصل على الدليل مجاناً 🎁</button>
             </form>
             <p class="text-xs text-slate-500 mt-3" data-i18n="newsletter_privacy">لن نشارك بريدك مع أحد. إلغاء الاشتراك في أي وقت.</p>
         </div>
