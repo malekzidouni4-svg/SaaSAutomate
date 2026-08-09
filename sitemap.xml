@@ -1,27 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://saasautomate.com/</loc>
-        <lastmod>2024-08-04</lastmod>
-        <changefreq>weekly</changefreq>
+        <loc>https://saasautomate.com/index.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>daily</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://saasautomate.com/privacy.html</loc>
-        <lastmod>2024-08-04</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
+        <loc>https://saasautomate.com/make.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
     </url>
     <url>
-        <loc>https://saasautomate.com/terms.html</loc>
-        <lastmod>2024-08-04</lastmod>
-        <changefreq>monthly</changefreq>
-        <priority>0.5</priority>
+        <loc>https://saasautomate.com/zapier.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://saasautomate.com/n8n.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>
+    <url>
+        <loc>https://saasautomate.com/make-vs-zapier.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://saasautomate.com/make-vs-n8n.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
+    </url>
+    <url>
+        <loc>https://saasautomate.com/zapier-vs-n8n.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.7</priority>
     </url>
     <url>
         <loc>https://saasautomate.com/contact.html</loc>
-        <lastmod>2024-08-04</lastmod>
+        <lastmod>2026-08-08</lastmod>
         <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
+        <priority>0.5</priority>
+    </url>
+    <url>
+        <loc>https://saasautomate.com/privacy.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    <url>
+        <loc>https://saasautomate.com/terms.html</loc>
+        <lastmod>2026-08-08</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
     </url>
 </urlset>
