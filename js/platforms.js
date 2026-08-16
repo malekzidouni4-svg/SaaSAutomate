@@ -5,8 +5,8 @@ const platformsData = {
     id: "make",
     name: "Make.com",
     tagline: {
-      ar: "الأفضل قيمة والأنسب للمشاريع المتوسطة والسيناريوهات المتقدمة",
-      en: "Best value and ideal for mid-size projects and advanced scenarios"
+      ar: "الخيار الذهبي والأعلى تقييماً: أفضل قيمة مقابل السعر ومحرر مرئي تفاعلي متطور",
+      en: "The Gold Standard: Ultimate value-for-money with an advanced visual builder"
     },
     scores: {
       usability: 8,
@@ -120,7 +120,7 @@ const platformsData = {
       ar: "لا يدعم الاستضافة الذاتية",
       en: "No self-hosted options"
     },
-    link: "https://www.make.com"
+    link: "https://www.make.com/en/register?pc=malek1966"
   },
 
   zapier: {
