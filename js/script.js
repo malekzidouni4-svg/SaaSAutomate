@@ -14,6 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderComparisonTable();
     renderPlatformCards();
     calculateROI();
+    calculateCostSimulation();
     updateQuizUI();
 
     // Log analytic event (Phase 19 & 20)
@@ -50,6 +51,7 @@ function toggleLanguage() {
     renderComparisonTable();
     renderPlatformCards();
     calculateROI();
+    calculateCostSimulation();
 
     if (document.getElementById('quiz-steps').classList.contains('hidden')) {
         calculateQuizScore();
@@ -594,6 +596,79 @@ function calculateROI() {
     trackEvent('roi_calculated', 'calculate', `emp_${employees}_hours_${hoursPerWeek}_cost_${hourlyRate}`);
 }
 
+// ===== Cost Simulator Logic =====
+function calculateCostSimulation() {
+    const slider = document.getElementById('task-volume');
+    if (!slider) return;
+
+    const tasks = parseInt(slider.value) || 10000;
+    const taskValDisplay = document.getElementById('sim-task-val');
+    if (taskValDisplay) {
+        taskValDisplay.textContent = tasks.toLocaleString();
+    }
+
+    // Cost calculations based on platform pricing tiers (2026 data)
+    let makeCost = 0;
+    if (tasks <= 1000) makeCost = 0;
+    else if (tasks <= 10000) makeCost = 9;
+    else if (tasks <= 40000) makeCost = 29;
+    else if (tasks <= 80000) makeCost = 53;
+    else if (tasks <= 150000) makeCost = 120;
+    else makeCost = Math.round(120 + (tasks - 150000) * 0.0008);
+
+    let zapierCost = 0;
+    if (tasks <= 100) zapierCost = 0;
+    else if (tasks <= 750) zapierCost = 20;
+    else if (tasks <= 2000) zapierCost = 49;
+    else if (tasks <= 5000) zapierCost = 89;
+    else if (tasks <= 10000) zapierCost = 129;
+    else if (tasks <= 50000) zapierCost = 299;
+    else if (tasks <= 100000) zapierCost = 599;
+    else zapierCost = Math.round(599 + (tasks - 100000) * 0.003);
+
+    let n8nCloudCost = 0;
+    if (tasks <= 2500) n8nCloudCost = 22;
+    else if (tasks <= 10000) n8nCloudCost = 55;
+    else if (tasks <= 50000) n8nCloudCost = 132;
+    else n8nCloudCost = Math.round(132 + (tasks - 50000) * 0.002);
+
+    const n8nSelfCost = 0; // Self-hosted community edition is 100% free
+
+    // Update displays
+    document.getElementById('sim-cost-make').textContent = makeCost === 0 ? (currentLang === 'ar' ? 'مجاني' : 'Free') : `$${makeCost} / ${currentLang === 'ar' ? 'شهر' : 'mo'}`;
+    document.getElementById('sim-cost-zapier').textContent = zapierCost === 0 ? (currentLang === 'ar' ? 'مجاني' : 'Free') : `$${zapierCost} / ${currentLang === 'ar' ? 'شهر' : 'mo'}`;
+    document.getElementById('sim-cost-n8n-cloud').textContent = `$${n8nCloudCost} / ${currentLang === 'ar' ? 'شهر' : 'mo'}`;
+    document.getElementById('sim-cost-n8n-self').textContent = `$0 / ${currentLang === 'ar' ? 'شهر' : 'mo'}`;
+
+    // Highlight cheapest cloud option
+    const maxCloud = Math.max(makeCost, zapierCost, n8nCloudCost);
+    const minCloud = Math.min(makeCost, zapierCost, n8nCloudCost);
+    const monthlyDiff = maxCloud - minCloud;
+
+    document.getElementById('sim-diff-amount').textContent = `$${monthlyDiff.toLocaleString()} / ${currentLang === 'ar' ? 'شهر' : 'mo'}`;
+
+    const simRec = document.getElementById('sim-cheapest-recommendation');
+    if (simRec) {
+        if (tasks >= 50000) {
+            simRec.innerHTML = currentLang === 'ar'
+                ? `<b>n8n (الاستضافة الذاتية)</b> هو الخيار الذكي الموفر جداً لهذا الحجم الضخم، يليه <b>Make.com</b> كخيار سحابي اقتصادي.`
+                : `<b>n8n (Self-Hosted)</b> is the ultimate money saver for high volumes, followed by <b>Make.com</b> as the best value cloud option.`;
+        } else {
+            simRec.innerHTML = currentLang === 'ar'
+                ? `<b>Make.com</b> يقدم القيمة الأفضل والأنسب لمستويات الاستخدام السحابية مقارنة بـ Zapier.`
+                : `<b>Make.com</b> offers the absolute best cloud value-for-money compared to Zapier.`;
+        }
+    }
+
+    trackEvent('cost_simulation', 'calculate', `tasks_${tasks}`);
+}
+
+// ===== Print / Export Summary Function =====
+function printSummaryReport() {
+    window.print();
+    trackEvent('report', 'print_export', 'summary_report');
+}
+
 // ===== Live Search Filtering Logic (Phase 17 Search) =====
 function handleSearch() {
     const query = document.getElementById('live-search').value.toLowerCase().trim();
@@ -727,6 +802,8 @@ if (typeof module !== 'undefined' && module.exports) {
         toggleMobileMenu,
         handleSearch,
         trackAffiliateClick,
-        trackEvent
+        trackEvent,
+        calculateCostSimulation,
+        printSummaryReport
     };
 }
