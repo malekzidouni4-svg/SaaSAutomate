@@ -194,6 +194,14 @@ const translations = {
     trust_compare_method: "كيف نقوم بالمقارنة؟ نقوم بالتحليل بناءً على معايير واضحة وشاملة: السعر الفعلي، سهولة البناء، مرونة الأكواد المخصصة، مستويات الخصوصية المتطورة، وتجربتنا العملية الطويلة لكل منصة.",
     trust_last_updated: "آخر تحديث شامل للمعلومات والأسعار: أغسطس/سبتمبر 2026",
 
+    // Cost Simulator & Summary Export
+    simulator_title: "حاسبة وسيموليتر تكلفة العمليات الشهرية 💰",
+    simulator_desc: "اختر عدد المهام والعمليات المتوقعة شهرياً لمقارنة تكلفة الاشتراك المباشرة بين المنصات واكتشاف الخيار الأوفر.",
+    simulator_tasks_label: "حجم العمليات الشهرية (Operations/Tasks):",
+    simulator_cheapest: "الخيار الأوفر والأنسب لهذا الحجم:",
+    simulator_saving_msg: "فرق التكلفة الشهرية بين المنصات يصل إلى:",
+    print_summary_btn: "📄 تصدير / طباعة التقرير الملخص",
+
     // Affiliate Disclosure (Phase 12)
     affiliate_disclosure_footer: "إفصاح الشفافية: قد نحصل على عمولة تسويقية صغيرة إذا قمت بالتسجيل في بعض الخدمات والمنصات من خلال روابطنا، وذلك دون أي تكلفة إضافية عليك نهائياً. توصياتنا محايدة بالكامل ومبنية على معايير المقارنة الموضحة والواقع العملي للخدمات.",
 
@@ -405,6 +413,14 @@ const translations = {
     // Trust Signals (Phases 23 & 24)
     trust_compare_method: "How do we compare? Our detailed scoring matrix is completely transparent and evaluated against concrete benchmarks: pricing plans, visual building ease, custom code adaptability, privacy, and extensive production testing.",
     trust_last_updated: "Latest detailed pricing and specs update: August/September 2026",
+
+    // Cost Simulator & Summary Export
+    simulator_title: "Interactive Monthly Operations Cost Simulator 💰",
+    simulator_desc: "Select your expected monthly task volume to compare live subscription costs side-by-side across platforms.",
+    simulator_tasks_label: "Monthly Operations / Tasks Volume:",
+    simulator_cheapest: "Most Cost-Effective Choice for this Volume:",
+    simulator_saving_msg: "Monthly price variance across platforms reaches up to:",
+    print_summary_btn: "📄 Export / Print Summary Report",
 
     // Affiliate Disclosure (Phase 12)
     affiliate_disclosure_footer: "Affiliate Disclosure: Some of the links on this website are affiliate links, meaning we may earn a small referral commission if you subscribe, at absolutely no additional cost to you. Our assessments are impartial and based on verified benchmarks.",
